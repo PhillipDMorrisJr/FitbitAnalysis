@@ -105,17 +105,20 @@ namespace FitbitAnalysis_Phillip_Morris.View
             {
                 this.outputTextBox.Text = "No Data";
             }
-            bool thresholdParsed;
-            var thresholdResult = this.handleWhenThresholdTextParsed(out thresholdParsed);
+            else
+            {
+                bool thresholdParsed;
+                var thresholdResult = this.handleWhenThresholdTextParsed(out thresholdParsed);
 
-            bool amountOfCategoriesParsed;
-            var amountOfCategoriesResult = this.handleAmountOfCategoriesParsed(out amountOfCategoriesParsed);
+                bool amountOfCategoriesParsed;
+                var amountOfCategoriesResult = this.handleAmountOfCategoriesParsed(out amountOfCategoriesParsed);
 
-            await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed);
+                await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed);
 
-            this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
-            this.outputTextBox.Text =
-                this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult);
+                this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
+                this.outputTextBox.Text =
+                    this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult);
+            }
         }
 
         private int handleAmountOfCategoriesParsed(out bool amountOfCategoriesParsed)
