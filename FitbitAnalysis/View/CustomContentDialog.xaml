@@ -13,9 +13,9 @@
         <Button Content="Skip" Click="skipButton_Click" Margin="15,121,0,47" Width="100"
                 RenderTransformOrigin="0.763,1.198" />
         <Button Content="Skip All" Click="skipAllButton_Click" Margin="15,158,0,10" Width="100" />
-        <Button Content="Keep" Click="replaceButton_Click" Margin="195,121,0,47" Width="100"
+        <Button Content="Replace" Click="replaceButton_Click" Margin="195,121,0,47" Width="100"
                 RenderTransformOrigin="0.763,1.198" />
-        <Button Content="Keep All" Click="replaceAllButton_OnClickButton_Click"
-                Margin="195,158,0,10" Width="100" />
+        <Button Content="Merge" Click="mergeButton_Click" Margin="195,163,0,5" Width="100"
+                RenderTransformOrigin="0.763,1.198" />
     </Grid>
 </ContentDialog>

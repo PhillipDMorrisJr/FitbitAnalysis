@@ -32,16 +32,15 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private static List<DateTime> duplicatedDatesNotToAdd;
         private static KeepFitbitDateDuplicatesDecision keepDuplicatesDecision;
         private static List<FitbitEntry> entriesToReplace;
-        private static List<FitbitEntry> entriesToSkip;
         private FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
         private bool replaceAllBoxChecked;
         private bool mergeAllBoxChecked;
+        private bool skipAll;
         private enum KeepFitbitDateDuplicatesDecision
         {
             Undecided,
             SkipForAll,
-            ReplaceAll,
             Replace,
             Skip,
             Merge
@@ -56,7 +55,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         public MainPage()
         {
             this.InitializeComponent();
-
+            this.fitbitJournal = new FitbitJournal();
             keepDuplicatesDecision = KeepFitbitDateDuplicatesDecision.Undecided;
             ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
@@ -76,14 +75,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private async void loadButton_Click(object sender, RoutedEventArgs e)
         {
             keepDuplicatesDecision = KeepFitbitDateDuplicatesDecision.Undecided;
-            await this.handleFitbitState();
+            this.skipAll = false;
             entriesToReplace = new List<FitbitEntry>();
-            entriesToSkip = new List<FitbitEntry>();
             duplicatedDatesNotToAdd = new List<DateTime>();
 
             var file = await pickFile();
             await this.parseFile(file);
-
+            
             this.replaceEntries();
 
             await this.generateHistogram();
@@ -166,21 +164,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             return file;
         }
 
-        private async Task handleFitbitState()
-        {
-            if (this.fitbitJournal == null)
-            {
-                this.fitbitJournal = new FitbitJournal();
-            }
-            else if (!this.fitbitJournal.IsEmpty())
-            {
-             //   await this.handleWhenRecordsExistAsync();
-            }
-            else
-            {
-                this.fitbitJournal = new FitbitJournal();
-            }
-        }
 
         /// <summary>
         ///     Parses the file.
@@ -213,27 +196,42 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     var floors = int.Parse(input[4]);
                     var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
                         floors);
-                    await this.handleWhenFitbitContainsDate(date, fitbitEntry);
+                    if (this.mergeAllBoxChecked)
+                    {
+                        this.fitbitJournal.AddEntry(fitbitEntry);
+                    } else if (this.skipAll)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        await this.handleWhenFitbitContainsDate(date, fitbitEntry);
+                    }
                 }
             }
         }
 
         private async Task handleWhenFitbitContainsDate(DateTime date, FitbitEntry fitbitEntry)
         {
+            
             if (this.fitbitJournal.ContainsDate(date))
             {
+               
                 await this.handleWhenThereAreDuplicateDates(fitbitEntry);
-                await this.handleWhenReplacing(fitbitEntry);
+                this.handleWhenReplacing(fitbitEntry);
             }
             else
             {
-                this.addToFitbitCollection(fitbitEntry);
+                this.fitbitJournal.AddEntry(fitbitEntry);
             }
         }
 
-        private Task handleWhenReplacing(FitbitEntry fitbitEntry)
+        private void handleWhenReplacing(FitbitEntry fitbitEntry)
         {
-            throw new NotImplementedException();
+            if (entriesToReplace.Contains(fitbitEntry))
+            {
+                this.fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
+            }
         }
 
         private void addToFitbitCollection(FitbitEntry fitbitEntry)
@@ -246,49 +244,27 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task handleWhenThereAreDuplicateDates(FitbitEntry fitbitEntry)
         {
-            if (keepDuplicatesDecision == KeepFitbitDateDuplicatesDecision.Undecided)
-            {
-             //   await this.handleDialogUndecidedDuplicateDecision(fitbitEntry);
-            }
-            else
-            {
-                this.handleDecidedDuplicateDecision(fitbitEntry);
-            }
-        }
+           
+                CustomContentDialog duplicateEntryDialog = new CustomContentDialog("There are other entries on " + fitbitEntry.Date);
+                await duplicateEntryDialog.OpenDialog();
 
-        private void handleDecidedDuplicateDecision(FitbitEntry fitbitEntry)
-        {
-            switch (keepDuplicatesDecision)
-            {
-                case KeepFitbitDateDuplicatesDecision.Merge:
-                    this.addToFitbitCollection(fitbitEntry);
-                    break;
-                case KeepFitbitDateDuplicatesDecision.Skip:
-                    break;
-                case KeepFitbitDateDuplicatesDecision.SkipForAll:
-                    duplicatedDatesNotToAdd.Add(fitbitEntry.Date);
-                    break;
-            }
-        }
-
-        private async Task handleDialogReplaceDuplicateDecision(FitbitEntry fitbitEntry)
-        {
-            if (keepDuplicatesDecision == KeepFitbitDateDuplicatesDecision.Undecided)
-            {
-                var handleReplaceDialog =
-                    new CustomContentDialog("Would you like to replace each duplicated entry for the date \n " + fitbitEntry.Date + " with the new day?");
-                await handleReplaceDialog.OpenDialog();
-                switch (handleReplaceDialog.Result)
+                switch (duplicateEntryDialog.Result)
                 {
+                    case CustomContentDialog.MyResult.Skip:
+                        break;
                     case CustomContentDialog.MyResult.Replace:
                         entriesToReplace.Add(fitbitEntry);
                         break;
-                    case CustomContentDialog.MyResult.Skip:
+                    case CustomContentDialog.MyResult.SkipAll:
+                        this.skipAll = true;
+                        break;
+                    case CustomContentDialog.MyResult.Merge:
+                        this.addToFitbitCollection(fitbitEntry);
                         break;
                 }
-
-            }
         }
+
+   
 
         private async void updateButton_OnClickButton_Click(object sender, RoutedEventArgs e)
         {

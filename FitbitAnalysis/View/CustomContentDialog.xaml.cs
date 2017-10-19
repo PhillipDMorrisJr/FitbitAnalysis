@@ -24,7 +24,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             Skip,
             SkipAll,
             Replace,
-            ReplaceAll
+            Merge
         }
 
         #endregion
@@ -75,9 +75,9 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await ShowAsync();
         }
 
-        private void replaceAllButton_OnClickButton_Click(object sender, RoutedEventArgs e)
+        private void mergeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.ReplaceAll;
+            this.Result = MyResult.Merge;
             this.dialog.Hide();
         }
 
