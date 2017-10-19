@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using FitbitAnalysis_Phillip_Morris.Model;
 
-namespace FitbitAnalysis_Phillip_Morris.View
+namespace FitbitAnalysis_Phillip_Morris.View.Report
 {
     /// <summary>
     ///     Manages output.

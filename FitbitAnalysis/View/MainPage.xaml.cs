@@ -9,6 +9,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
+using FitbitAnalysis_Phillip_Morris.View.Report;
 
 namespace FitbitAnalysis_Phillip_Morris.View
 {
@@ -30,21 +31,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
         public const int ApplicationWidth = 800;
 
         private static List<DateTime> duplicatedDatesNotToAdd;
-        private static KeepFitbitDateDuplicatesDecision keepDuplicatesDecision;
         private static List<FitbitEntry> entriesToReplace;
         private FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
         private bool replaceAllBoxChecked;
         private bool mergeAllBoxChecked;
         private bool skipAll;
-        private enum KeepFitbitDateDuplicatesDecision
-        {
-            Undecided,
-            SkipForAll,
-            Replace,
-            Skip,
-            Merge
-        }
+
         #endregion
 
         #region Constructors
@@ -56,7 +49,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             this.InitializeComponent();
             this.fitbitJournal = new FitbitJournal();
-            keepDuplicatesDecision = KeepFitbitDateDuplicatesDecision.Undecided;
             ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
@@ -74,7 +66,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// <param name="e">The <see cref="Windows.UI.Xaml.RoutedEventArgs" /> instance containing the event data.</param>
         private async void loadButton_Click(object sender, RoutedEventArgs e)
         {
-            keepDuplicatesDecision = KeepFitbitDateDuplicatesDecision.Undecided;
             this.skipAll = false;
             entriesToReplace = new List<FitbitEntry>();
             duplicatedDatesNotToAdd = new List<DateTime>();
@@ -196,18 +187,23 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     var floors = int.Parse(input[4]);
                     var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
                         floors);
-                    if (this.mergeAllBoxChecked)
-                    {
-                        this.fitbitJournal.AddEntry(fitbitEntry);
-                    } else if (this.skipAll)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        await this.handleWhenFitbitContainsDate(date, fitbitEntry);
-                    }
+                    await this.manageAndAddFitbitEntry(fitbitEntry, date);
                 }
+            }
+        }
+
+        private async Task manageAndAddFitbitEntry(FitbitEntry fitbitEntry, DateTime date)
+        {
+            if (this.mergeAllBoxChecked)
+            {
+                this.fitbitJournal.AddEntry(fitbitEntry);
+            }
+            else if (this.skipAll)
+            {
+            }
+            else
+            {
+                await this.handleWhenFitbitContainsDate(date, fitbitEntry);
             }
         }
 
@@ -323,5 +319,14 @@ namespace FitbitAnalysis_Phillip_Morris.View
         }
 
         #endregion
+
+        private async void addEntry_OnClick(object sender, RoutedEventArgs e)
+        {
+            EntryDialog entryDialog = new EntryDialog();
+            await entryDialog.OpenDialog();
+            var entry = entryDialog.FitbitEntry;
+                await this.manageAndAddFitbitEntry(entry, entry.Date);
+
+        }
     }
 }
