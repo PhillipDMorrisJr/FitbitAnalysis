@@ -1,0 +1,21 @@
+﻿<ContentDialog
+    x:Class="FitbitAnalysis_Phillip_Morris.View.CustomContentDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="dialog"
+    Title="Attention" Height="312.652" Width="355.088">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300">
+        <TextBlock x:Name="prompt" Text="Prompt not set" Margin="0,10,0,5" HorizontalAlignment="Right" Width="289" />
+        <Button Content="Skip" Click="skipButton_Click" Margin="15,121,0,47" Width="100"
+                RenderTransformOrigin="0.763,1.198" />
+        <Button Content="Skip All" Click="skipAllButton_Click" Margin="15,158,0,10" Width="100" />
+        <Button Content="Keep" Click="replaceButton_Click" Margin="195,121,0,47" Width="100"
+                RenderTransformOrigin="0.763,1.198" />
+        <Button Content="Keep All" Click="replaceAllButton_OnClickButton_Click"
+                Margin="195,158,0,10" Width="100" />
+    </Grid>
+</ContentDialog>
