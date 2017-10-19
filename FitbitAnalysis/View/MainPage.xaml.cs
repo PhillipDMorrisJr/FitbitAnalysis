@@ -296,7 +296,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
             //throw new NotImplementedException();
-
         }
 
         private void replaceAllBox_OnChecked(object sender, RoutedEventArgs e)
