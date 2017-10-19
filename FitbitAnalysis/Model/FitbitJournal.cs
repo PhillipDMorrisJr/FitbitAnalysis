@@ -20,7 +20,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         public int MinSteps => this.fitbitEntries.Min(entry => entry.Steps);
 
         public int MaxSteps => this.fitbitEntries.Max(entry => entry.Steps);
-
+        public List<FitbitEntry> Entries => this.fitbitEntries;
         public double AverageSteps => this.fitbitEntries.Average(entry => entry.Steps);
         public DateTime FirstEntryDate => this.getAllEntriesOrderedByDate()[0].Date;
         public DateTime LastEntryDate => this.getAllEntriesOrderedByDate()[this.fitbitEntries.Count - 1].Date;

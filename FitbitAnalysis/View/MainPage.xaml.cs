@@ -32,7 +32,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private static List<DateTime> duplicatedDatesNotToAdd;
         private static List<FitbitEntry> entriesToReplace;
-        private FitbitJournal fitbitJournal;
+        private readonly FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
         private bool replaceAllBoxChecked;
         private bool mergeAllBoxChecked;
@@ -72,7 +72,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
             var file = await pickFile();
             await this.parseFile(file);
-            
+
             this.replaceEntries();
 
             await this.generateHistogram();
@@ -155,7 +155,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             return file;
         }
 
-
         /// <summary>
         ///     Parses the file.
         /// </summary>
@@ -209,10 +208,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task handleWhenFitbitContainsDate(DateTime date, FitbitEntry fitbitEntry)
         {
-            
             if (this.fitbitJournal.ContainsDate(date))
             {
-               
                 await this.handleWhenThereAreDuplicateDates(fitbitEntry);
                 this.handleWhenReplacing(fitbitEntry);
             }
@@ -240,27 +237,24 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task handleWhenThereAreDuplicateDates(FitbitEntry fitbitEntry)
         {
-           
-                CustomContentDialog duplicateEntryDialog = new CustomContentDialog("There are other entries on " + fitbitEntry.Date);
-                await duplicateEntryDialog.OpenDialog();
+            var duplicateEntryDialog = new CustomContentDialog("There are other entries on " + fitbitEntry.Date);
+            await duplicateEntryDialog.OpenDialog();
 
-                switch (duplicateEntryDialog.Result)
-                {
-                    case CustomContentDialog.MyResult.Skip:
-                        break;
-                    case CustomContentDialog.MyResult.Replace:
-                        entriesToReplace.Add(fitbitEntry);
-                        break;
-                    case CustomContentDialog.MyResult.SkipAll:
-                        this.skipAll = true;
-                        break;
-                    case CustomContentDialog.MyResult.Merge:
-                        this.addToFitbitCollection(fitbitEntry);
-                        break;
-                }
+            switch (duplicateEntryDialog.Result)
+            {
+                case CustomContentDialog.MyResult.Skip:
+                    break;
+                case CustomContentDialog.MyResult.Replace:
+                    entriesToReplace.Add(fitbitEntry);
+                    break;
+                case CustomContentDialog.MyResult.SkipAll:
+                    this.skipAll = true;
+                    break;
+                case CustomContentDialog.MyResult.Merge:
+                    this.addToFitbitCollection(fitbitEntry);
+                    break;
+            }
         }
-
-   
 
         private async void updateButton_OnClickButton_Click(object sender, RoutedEventArgs e)
         {
@@ -272,9 +266,22 @@ namespace FitbitAnalysis_Phillip_Morris.View
             this.fitbitJournal.ClearEntries();
         }
 
-        private void saveButton_Click(object sender, RoutedEventArgs e)
+        private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            //throw new NotImplementedException();
+            var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories" + Environment.NewLine;
+            foreach (var entry in this.fitbitJournal.Entries)
+            {
+                fitbitFileOutput += entry.Date + "," + entry.CaloriesBurned + "," + entry.Steps + "," + entry.Distance +
+                                    "," + entry.Floors + "," + entry.ActivityCalories + Environment.NewLine;
+            }
+
+            var storageFolder =
+                ApplicationData.Current.LocalFolder;
+            var fitbitSaveFile =
+                await storageFolder.CreateFileAsync("fitbitSavedData.csv",
+                    CreationCollisionOption.ReplaceExisting);
+
+            await FileIO.WriteTextAsync(fitbitSaveFile, fitbitFileOutput);
         }
 
         private void replaceAllBox_OnChecked(object sender, RoutedEventArgs e)
@@ -299,7 +306,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             if (this.mergeAllBoxChecked)
             {
-                 this.setEnable(this.replaceAllBox, false);
+                this.setEnable(this.replaceAllBox, false);
             }
         }
 
@@ -318,15 +325,14 @@ namespace FitbitAnalysis_Phillip_Morris.View
             checkBox.IsEnabled = isEnabled;
         }
 
-        #endregion
-
         private async void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
-            EntryDialog entryDialog = new EntryDialog();
+            var entryDialog = new EntryDialog();
             await entryDialog.OpenDialog();
             var entry = entryDialog.FitbitEntry;
-                await this.manageAndAddFitbitEntry(entry, entry.Date);
-
+            await this.manageAndAddFitbitEntry(entry, entry.Date);
         }
+
+        #endregion
     }
 }
