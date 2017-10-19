@@ -101,6 +101,10 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task generateHistogram()
         {
+            if (this.fitbitJournal.IsEmpty())
+            {
+                this.outputTextBox.Text = "No Data";
+            }
             bool thresholdParsed;
             var thresholdResult = this.handleWhenThresholdTextParsed(out thresholdParsed);
 
