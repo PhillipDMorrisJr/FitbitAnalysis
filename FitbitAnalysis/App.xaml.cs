@@ -1,16 +1,16 @@
-﻿using System;
-using Windows.ApplicationModel;
+﻿using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using FitbitAnalysis_Phillip_Morris.View;
 
 namespace FitbitAnalysis_Phillip_Morris
 {
     /// <summary>
     ///     Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : Application
+    internal sealed partial class App : Application
     {
         #region Constructors
 
@@ -20,8 +20,8 @@ namespace FitbitAnalysis_Phillip_Morris
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            Suspending += this.OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
         }
 
         #endregion
@@ -44,7 +44,7 @@ namespace FitbitAnalysis_Phillip_Morris
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
-                rootFrame.NavigationFailed += this.OnNavigationFailed;
+                rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -58,12 +58,7 @@ namespace FitbitAnalysis_Phillip_Morris
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(View.MainPage), e.Arguments);
-                }
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 // Ensure the current window is active
                 Window.Current.Activate();
             }

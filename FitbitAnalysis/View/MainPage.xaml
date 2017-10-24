@@ -8,22 +8,41 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="0,-3,-420,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="731*"/>
-            <ColumnDefinition Width="49*"/>
+            <ColumnDefinition Width="731*" />
+            <ColumnDefinition Width="49*" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="loadButton" Content="Load" HorizontalAlignment="Left" Margin="86,10,0,0" VerticalAlignment="Top" Click="loadButton_Click" Height="32" Width="52"/>
-        <Button Grid.Column="0" x:Name="startButton" Content="Load" HorizontalAlignment="Left" Margin="86,10,0,0" VerticalAlignment="Top" Click="loadButton_Click" Height="32" Width="52"/>
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="86,46,0,0" TextWrapping="Wrap" Text="Fitbit data analysis" VerticalAlignment="Top" Height="20" Width="122"/>
-        <TextBox Grid.Column="0" x:Name="outputTextBox" Margin="86,71,0,0" TextWrapping="Wrap" Text="Fitbit Analysis" VerticalAlignment="Top" Height="276" IsReadOnly="True" HorizontalAlignment="Left" Width="600"/>
-        <TextBox Grid.Column="0" HorizontalAlignment="Left" x:Name="threshold" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" RenderTransformOrigin="2.254,1.156" Margin="250,12,0,0" Height="32" Width="64"/>
-        <TextBox Grid.Column="0" HorizontalAlignment="Left" x:Name="amountOfCategories" Margin="473,12,0,0" TextWrapping="Wrap" Text="6" VerticalAlignment="Top" RenderTransformOrigin="0.436,1.281" Height="32" Width="64"/>
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="176,12,0,0" TextWrapping="Wrap" Text="Threshold:" VerticalAlignment="Top" RenderTransformOrigin="0.061,1.65" Height="32" Width="69"/>
-        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="319,16,0,0" TextWrapping="Wrap" Text="Amount of Categories:" VerticalAlignment="Top" RenderTransformOrigin="0.061,1.65" Height="32" Width="149"/>
-        <Button Grid.Column="0" x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="542,12,0,0" VerticalAlignment="Top" Click="updateButton_OnClickButton_Click" Height="32" Width="69"/>
-        <Button Grid.Column="0" x:Name="clearButton" Content="Clear" HorizontalAlignment="Left" Margin="250,382,0,0" VerticalAlignment="Top" Click="clearButton_Click" Height="32" Width="52"/>
-        <Button Grid.Column="0" x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Margin="319,382,0,0" VerticalAlignment="Top" Click="saveButton_Click" Height="32" Width="52" RenderTransformOrigin="1,-2.188"/>
-        <CheckBox Grid.Column="0" x:Name="replaceAllBox" Content="Replace All Data On Load" HorizontalAlignment="Left" Margin="118,455,0,0" VerticalAlignment="Top" Checked="replaceAllBox_OnChecked" Unchecked="replaceAllBox_OnUnchecked"/>
-        <CheckBox Grid.Column="0" x:Name="mergeAllBox" Content="Merge All Data On Load" HorizontalAlignment="Left" Margin="423,455,0,0" VerticalAlignment="Top" Checked="mergeAllBox_OnCheckedAllBox_OnChecked" Unchecked="mergeAllBox_OnUnchecked"/>
-        <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="383,382,0,0" Click="addEntry_OnClick"/>
+        <Button x:Name="loadButton" Content="Load" HorizontalAlignment="Left" Margin="86,10,0,0"
+                VerticalAlignment="Top" Click="loadButton_Click" Height="32" Width="52" />
+        <Button Grid.Column="0" x:Name="startButton" Content="Load" HorizontalAlignment="Left" Margin="86,10,0,0"
+                VerticalAlignment="Top" Click="loadButton_Click" Height="32" Width="52" />
+        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="86,46,0,0" TextWrapping="Wrap"
+                   Text="Fitbit data analysis" VerticalAlignment="Top" Height="20" Width="122" />
+        <TextBox Grid.Column="0" x:Name="outputTextBox" Margin="86,71,0,0" TextWrapping="Wrap" Text="Fitbit Analysis"
+                 VerticalAlignment="Top" Height="276" IsReadOnly="True" HorizontalAlignment="Left" Width="600" />
+        <TextBox Grid.Column="0" HorizontalAlignment="Left" x:Name="threshold" TextWrapping="Wrap" Text="10000"
+                 VerticalAlignment="Top" RenderTransformOrigin="2.254,1.156" Margin="250,12,0,0" Height="32" Width="64" />
+        <TextBox Grid.Column="0" HorizontalAlignment="Left" x:Name="amountOfCategories" Margin="473,12,0,0"
+                 TextWrapping="Wrap" Text="6" VerticalAlignment="Top" RenderTransformOrigin="0.436,1.281" Height="32"
+                 Width="64" />
+        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="176,12,0,0" TextWrapping="Wrap" Text="Threshold:"
+                   VerticalAlignment="Top" RenderTransformOrigin="0.061,1.65" Height="32" Width="69" />
+        <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="319,16,0,0" TextWrapping="Wrap"
+                   Text="Amount of Categories:" VerticalAlignment="Top" RenderTransformOrigin="0.061,1.65" Height="32"
+                   Width="149" />
+        <Button Grid.Column="0" x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="542,12,0,0"
+                VerticalAlignment="Top" Click="updateButton_OnClickButton_Click" Height="32" Width="69" />
+        <Button Grid.Column="0" x:Name="clearButton" Content="Clear" HorizontalAlignment="Left" Margin="250,382,0,0"
+                VerticalAlignment="Top" Click="clearButton_Click" Height="32" Width="52" />
+        <Button Grid.Column="0" x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Margin="319,382,0,0"
+                VerticalAlignment="Top" Click="saveButton_Click" Height="32" Width="52"
+                RenderTransformOrigin="1,-2.188" />
+        <CheckBox Grid.Column="0" x:Name="replaceAllBox" Content="Replace All Data On Load" HorizontalAlignment="Left"
+                  Margin="118,455,0,0" VerticalAlignment="Top" Checked="replaceAllBox_OnChecked"
+                  Unchecked="replaceAllBox_OnUnchecked" />
+        <CheckBox Grid.Column="0" x:Name="mergeAllBox" Content="Merge All Data On Load" HorizontalAlignment="Left"
+                  Margin="423,455,0,0" VerticalAlignment="Top" Checked="mergeAllBox_OnCheckedAllBox_OnChecked"
+                  Unchecked="mergeAllBox_OnUnchecked" />
+        <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="383,382,0,0"
+                Click="addEntry_OnClick" />
     </Grid>
 </Page>

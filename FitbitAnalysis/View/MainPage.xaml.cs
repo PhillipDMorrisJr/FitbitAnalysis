@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Storage;
+﻿using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -18,6 +13,22 @@ namespace FitbitAnalysis_Phillip_Morris.View
     /// </summary>
     public sealed partial class MainPage
     {
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MainPage" /> class.
+        /// </summary>
+        public MainPage()
+        {
+            InitializeComponent();
+            fitbitJournal = new FitbitJournal();
+            ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
+        }
+
+        #endregion
+
         #region Data members
 
         /// <summary>
@@ -40,22 +51,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         #endregion
 
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="MainPage" /> class.
-        /// </summary>
-        public MainPage()
-        {
-            this.InitializeComponent();
-            this.fitbitJournal = new FitbitJournal();
-            ApplicationView.PreferredLaunchViewSize = new Size {Width = ApplicationWidth, Height = ApplicationHeight};
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(ApplicationWidth, ApplicationHeight));
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -66,16 +61,16 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// <param name="e">The <see cref="Windows.UI.Xaml.RoutedEventArgs" /> instance containing the event data.</param>
         private async void loadButton_Click(object sender, RoutedEventArgs e)
         {
-            this.skipAll = false;
+            skipAll = false;
             entriesToReplace = new List<FitbitEntry>();
             duplicatedDatesNotToAdd = new List<DateTime>();
 
             var file = await pickFile();
-            await this.parseFile(file);
+            await parseFile(file);
 
-            this.replaceEntries();
+            replaceEntries();
 
-            await this.generateHistogram();
+            await generateHistogram();
         }
 
         private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed)
@@ -90,61 +85,56 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task generateHistogram()
         {
-            if (this.fitbitJournal.IsEmpty())
+            if (fitbitJournal.IsEmpty())
             {
-                this.outputTextBox.Text = "No Data";
+                outputTextBox.Text = "No Data";
             }
             else
             {
                 bool thresholdParsed;
-                var thresholdResult = this.handleWhenThresholdTextParsed(out thresholdParsed);
+                var thresholdResult = handleWhenThresholdTextParsed(out thresholdParsed);
 
                 bool amountOfCategoriesParsed;
-                var amountOfCategoriesResult = this.handleAmountOfCategoriesParsed(out amountOfCategoriesParsed);
+                var amountOfCategoriesResult = handleAmountOfCategoriesParsed(out amountOfCategoriesParsed);
 
                 await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed);
 
-                this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
-                this.outputTextBox.Text =
-                    this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult);
+                fitbitFitbitJournalOutput = new FitbitJournalOutput(fitbitJournal);
+                outputTextBox.Text =
+                    fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult);
             }
         }
 
         private int handleAmountOfCategoriesParsed(out bool amountOfCategoriesParsed)
         {
-            var amountOfCategoriesText = this.amountOfCategories.Text;
+            var amountOfCategoriesText = amountOfCategories.Text;
             int amountOfCategoriesResult;
             amountOfCategoriesParsed = int.TryParse(amountOfCategoriesText, out amountOfCategoriesResult);
             if (amountOfCategoriesParsed)
-            {
-                this.amountOfCategories.Text = amountOfCategoriesResult.ToString();
-            }
+                amountOfCategories.Text = amountOfCategoriesResult.ToString();
             return amountOfCategoriesResult;
         }
 
         private int handleWhenThresholdTextParsed(out bool thresholdParsed)
         {
-            var thresholdText = this.threshold.Text;
+            var thresholdText = threshold.Text;
             int thresholdResult;
             thresholdParsed = int.TryParse(thresholdText, out thresholdResult);
             if (thresholdParsed)
-            {
-                this.threshold.Text = thresholdResult.ToString();
-            }
+                threshold.Text = thresholdResult.ToString();
             return thresholdResult;
         }
 
         private void replaceEntries()
         {
             foreach (var fitbitEntry in entriesToReplace)
-            {
-                this.fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
-            }
+                fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
         }
 
         private static async Task<StorageFile> pickFile()
         {
-            var fileChooser = new FileOpenPicker {
+            var fileChooser = new FileOpenPicker
+            {
                 ViewMode = PickerViewMode.Thumbnail,
                 SuggestedStartLocation = PickerLocationId.DocumentsLibrary
             };
@@ -163,9 +153,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private async Task parseFile(StorageFile file)
         {
             if (file == null)
-            {
                 throw new ArgumentException("File Must not be null.");
-            }
             char[] seperator = {','};
             var stream = await file.OpenStreamForReadAsync();
 
@@ -186,53 +174,49 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     var floors = int.Parse(input[4]);
                     var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
                         floors);
-                    await this.manageAndAddFitbitEntry(fitbitEntry, date);
+                    await manageAndAddFitbitEntry(fitbitEntry, date);
                 }
             }
         }
 
         private async Task manageAndAddFitbitEntry(FitbitEntry fitbitEntry, DateTime date)
         {
-            if (this.mergeAllBoxChecked)
+            if (mergeAllBoxChecked)
             {
-                this.fitbitJournal.AddEntry(fitbitEntry);
+                fitbitJournal.AddEntry(fitbitEntry);
             }
-            else if (this.skipAll)
+            else if (skipAll)
             {
             }
             else
             {
-                await this.handleWhenFitbitContainsDate(date, fitbitEntry);
+                await handleWhenFitbitContainsDate(date, fitbitEntry);
             }
         }
 
         private async Task handleWhenFitbitContainsDate(DateTime date, FitbitEntry fitbitEntry)
         {
-            if (this.fitbitJournal.ContainsDate(date))
+            if (fitbitJournal.ContainsDate(date))
             {
-                await this.handleWhenThereAreDuplicateDates(fitbitEntry);
-                this.handleWhenReplacing(fitbitEntry);
+                await handleWhenThereAreDuplicateDates(fitbitEntry);
+                handleWhenReplacing(fitbitEntry);
             }
             else
             {
-                this.fitbitJournal.AddEntry(fitbitEntry);
+                fitbitJournal.AddEntry(fitbitEntry);
             }
         }
 
         private void handleWhenReplacing(FitbitEntry fitbitEntry)
         {
             if (entriesToReplace.Contains(fitbitEntry))
-            {
-                this.fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
-            }
+                fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
         }
 
         private void addToFitbitCollection(FitbitEntry fitbitEntry)
         {
             if (!duplicatedDatesNotToAdd.Contains(fitbitEntry.Date))
-            {
-                this.fitbitJournal.AddEntry(fitbitEntry);
-            }
+                fitbitJournal.AddEntry(fitbitEntry);
         }
 
         private async Task handleWhenThereAreDuplicateDates(FitbitEntry fitbitEntry)
@@ -248,32 +232,30 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     entriesToReplace.Add(fitbitEntry);
                     break;
                 case CustomContentDialog.MyResult.SkipAll:
-                    this.skipAll = true;
+                    skipAll = true;
                     break;
                 case CustomContentDialog.MyResult.Merge:
-                    this.addToFitbitCollection(fitbitEntry);
+                    addToFitbitCollection(fitbitEntry);
                     break;
             }
         }
 
         private async void updateButton_OnClickButton_Click(object sender, RoutedEventArgs e)
         {
-            await this.generateHistogram();
+            await generateHistogram();
         }
 
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
-            this.fitbitJournal.ClearEntries();
+            fitbitJournal.ClearEntries();
         }
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
             var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories" + Environment.NewLine;
-            foreach (var entry in this.fitbitJournal.Entries)
-            {
+            foreach (var entry in fitbitJournal.Entries)
                 fitbitFileOutput += entry.Date + "," + entry.CaloriesBurned + "," + entry.Steps + "," + entry.Distance +
                                     "," + entry.Floors + "," + entry.ActivityCalories + Environment.NewLine;
-            }
 
             var storageFolder =
                 ApplicationData.Current.LocalFolder;
@@ -286,38 +268,30 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void replaceAllBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            var isChecked = this.replaceAllBox.IsChecked;
+            var isChecked = replaceAllBox.IsChecked;
             if (isChecked != null)
-            {
-                this.replaceAllBoxChecked = isChecked.Value;
-            }
-            if (this.replaceAllBoxChecked)
-            {
-                this.setEnable(this.mergeAllBox, false);
-            }
+                replaceAllBoxChecked = isChecked.Value;
+            if (replaceAllBoxChecked)
+                setEnable(mergeAllBox, false);
         }
 
         private void mergeAllBox_OnCheckedAllBox_OnChecked(object sender, RoutedEventArgs e)
         {
-            var isChecked = this.mergeAllBox.IsChecked;
+            var isChecked = mergeAllBox.IsChecked;
             if (isChecked != null)
-            {
-                this.mergeAllBoxChecked = isChecked.Value;
-            }
-            if (this.mergeAllBoxChecked)
-            {
-                this.setEnable(this.replaceAllBox, false);
-            }
+                mergeAllBoxChecked = isChecked.Value;
+            if (mergeAllBoxChecked)
+                setEnable(replaceAllBox, false);
         }
 
         private void replaceAllBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            this.setEnable(this.mergeAllBox, true);
+            setEnable(mergeAllBox, true);
         }
 
         private void mergeAllBox_OnUnchecked(object sender, RoutedEventArgs e)
         {
-            this.setEnable(this.replaceAllBox, true);
+            setEnable(replaceAllBox, true);
         }
 
         private void setEnable(CheckBox checkBox, bool isEnabled)

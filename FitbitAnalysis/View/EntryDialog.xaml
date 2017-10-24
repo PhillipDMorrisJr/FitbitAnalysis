@@ -10,12 +10,17 @@
     d:DesignWidth="400">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300">
-        <TextBox x:Name="caloriesBurned" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Calories burned" VerticalAlignment="Top" Margin="10,162,0,0" Width="279"/>
-        <TextBox x:Name="steps" HorizontalAlignment="Left" TextWrapping="Wrap" Text="steps" VerticalAlignment="Top" Margin="10,88,0,0" Width="279"/>
-        <TextBox x:Name="distance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="distance" VerticalAlignment="Top" Margin="10,125,0,0" Width="279"/>
-        <TextBox x:Name="floors" Margin="11,199,10,0" TextWrapping="Wrap" Text="floors" VerticalAlignment="Top"/>
-        <TextBox x:Name="activityCalories" Margin="10,231,11,0" TextWrapping="Wrap" Text="activity calories" VerticalAlignment="Top"/>
-        <Button Content="Add entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="213,10,0,0" RenderTransformOrigin="0.219,0.625" Click="addEntry_OnClick"/>
-        <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="11,51,0,0" VerticalAlignment="Top" Width="278"/>
+        <TextBox x:Name="caloriesBurned" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Calories burned"
+                 VerticalAlignment="Top" Margin="10,162,0,0" Width="279" />
+        <TextBox x:Name="steps" HorizontalAlignment="Left" TextWrapping="Wrap" Text="steps" VerticalAlignment="Top"
+                 Margin="10,88,0,0" Width="279" />
+        <TextBox x:Name="distance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="distance"
+                 VerticalAlignment="Top" Margin="10,125,0,0" Width="279" />
+        <TextBox x:Name="floors" Margin="11,199,10,0" TextWrapping="Wrap" Text="floors" VerticalAlignment="Top" />
+        <TextBox x:Name="activityCalories" Margin="10,231,11,0" TextWrapping="Wrap" Text="activity calories"
+                 VerticalAlignment="Top" />
+        <Button Content="Add entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="213,10,0,0"
+                RenderTransformOrigin="0.219,0.625" Click="addEntry_OnClick" />
+        <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="11,51,0,0" VerticalAlignment="Top" Width="278" />
     </Grid>
 </ContentDialog>
