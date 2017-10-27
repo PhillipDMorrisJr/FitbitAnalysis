@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using FitbitAnalysis_Phillip_Morris.Model;
 
-namespace FitbitAnalysis_Phillip_Morris.View.Report
+namespace FitbitAnalysis_Phillip_Morris.Report
 {
     /// <summary>
     ///     Manages output.
@@ -16,6 +16,7 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
         private List<string> outputStatements;
         private int currentThreshold;
         private int currentAmountOfCategories;
+        private int currentBinSize;
 
         #endregion
 
@@ -29,27 +30,23 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
         #endregion
 
         #region Methods
-
         /// <summary>
         ///     Gets the output.
         /// </summary>
         /// <returns>The output</returns>
-        public string GetOutput(int threshold, int amountOfCategories)
+        public string GetOutput(int threshold, int amountOfCategories, int binSize)
         {
             if (amountOfCategories > threshold)
             {
+                //TODO: Add Popup
                 throw new ArgumentException("Threshold must be greater than the amount of categories!");
             }
-            if (threshold < 0)
+            if (threshold < 0 || amountOfCategories < 0 || binSize < 0)
             {
+                //TODO: Popup
                 throw new ArgumentException("Threshold must be positive!");
             }
-
-            if (amountOfCategories < 0)
-            {
-                throw new ArgumentException("Amount of categories must be positive");
-            }
-
+            this.currentBinSize = binSize;
             this.currentThreshold = threshold;
             this.currentAmountOfCategories = amountOfCategories;
             this.initializeOutputStatments();
@@ -75,7 +72,7 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
         private void addBoundaryStatements(FitbitJournal currentFitbitJournal)
         {
             var lowerBound = 1;
-            var upperBound = this.currentThreshold;
+            var upperBound = this.currentBinSize;
 
             for (var index = 0; index < this.currentAmountOfCategories; index++)
             {
@@ -91,8 +88,8 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
                 {
                     this.addDaysWithStepBetweenBoundariesStatements(lowerBound, upperBound);
                 }
-                lowerBound += this.currentThreshold;
-                upperBound += this.currentThreshold;
+                lowerBound += this.currentBinSize;
+                upperBound += this.currentBinSize;
             }
         }
 
@@ -100,10 +97,10 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
         ///     Adds the last boundary statement.
         /// </summary>
         /// <param name="lastBoundary">The last boundary.</param>
-        /// <param name="currentCategoryManager"></param>
-        private void addLastBoundaryStatement(int lastBoundary, FitbitJournal currentCategoryManager)
+        /// <param name="currentFitbitJournal"></param>
+        private void addLastBoundaryStatement(int lastBoundary, FitbitJournal currentFitbitJournal)
         {
-            var boundarySix = "Days with " + lastBoundary.ToString("N0") + " or more: " + currentCategoryManager.CountDaysWithStepsOver(lastBoundary).ToString("N0");
+            var boundarySix = "Days with " + lastBoundary.ToString("N0") + " or more: " + currentFitbitJournal.CountDaysWithStepsOver(lastBoundary).ToString("N0");
             this.outputStatements.Add(boundarySix);
         }
 
@@ -207,8 +204,6 @@ namespace FitbitAnalysis_Phillip_Morris.View.Report
             this.addBoundaryStatements(yearlyJournal);
 
         }
-
-
 
         private void generateMonthlyBreakDown(int year, string[] months, FitbitJournal monthlyFitbitJournal)
         {

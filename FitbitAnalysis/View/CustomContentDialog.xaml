@@ -8,7 +8,7 @@
     x:Name="dialog"
     Title="Attention" Height="312.652" Width="355.088">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300" CanDrag="True">
         <TextBlock x:Name="prompt" Text="Prompt not set" Margin="0,10,0,5" HorizontalAlignment="Right" Width="289" />
         <Button Content="Skip" Click="skipButton_Click" Margin="15,121,0,47" Width="100"
                 RenderTransformOrigin="0.763,1.198" />

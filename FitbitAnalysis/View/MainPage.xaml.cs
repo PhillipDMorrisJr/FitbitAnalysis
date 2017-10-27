@@ -9,7 +9,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
-using FitbitAnalysis_Phillip_Morris.View.Report;
+using FitbitAnalysis_Phillip_Morris.Report;
 
 namespace FitbitAnalysis_Phillip_Morris.View
 {
@@ -23,12 +23,12 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// <summary>
         ///     The application height
         /// </summary>
-        public const int ApplicationHeight = 500;
+        public const int ApplicationHeight = 1000;
 
         /// <summary>
         ///     The application width
         /// </summary>
-        public const int ApplicationWidth = 800;
+        public const int ApplicationWidth = 1200;
 
         private static List<DateTime> duplicatedDatesNotToAdd;
         private static List<FitbitEntry> entriesToReplace;
@@ -78,9 +78,9 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await this.generateHistogram();
         }
 
-        private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed)
+        private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed, bool binSizeParsed)
         {
-            if (!thresholdParsed || !amountOfCategoryParsed)
+            if (!thresholdParsed || !amountOfCategoryParsed || !binSizeParsed)
             {
                 var invalidInpuDialog = new ContentDialog();
                 invalidInpuDialog.Content = "All input must be numbers";
@@ -97,18 +97,34 @@ namespace FitbitAnalysis_Phillip_Morris.View
             else
             {
                 bool thresholdParsed;
-                var thresholdResult = this.handleWhenThresholdTextParsed(out thresholdParsed);
-
+                bool binSizeParsed;
                 bool amountOfCategoriesParsed;
-                var amountOfCategoriesResult = this.handleAmountOfCategoriesParsed(out amountOfCategoriesParsed);
 
-                await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed);
+                var thresholdResult = this.parseTextBoxTextToInteger(out thresholdParsed, this.threshold);
+                var amountOfCategoriesResult = this.parseTextBoxTextToInteger(out amountOfCategoriesParsed, this.amountOfCategories);
+                var binSizeResult = this.parseTextBoxTextToInteger(out binSizeParsed, this.binSize);
+
+                await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed, binSizeParsed);
 
                 this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
                 this.outputTextBox.Text =
-                    this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult);
+                    this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
             }
         }
+
+
+        private int parseTextBoxTextToInteger(out bool isParsed, TextBox textBox)
+        {
+            var text = textBox.Text;
+            int result;
+            isParsed = int.TryParse(text, out result);
+            if (isParsed)
+            {
+                textBox.Text = Convert.ToString(result);
+            }
+            return result;
+        }
+
 
         private int handleAmountOfCategoriesParsed(out bool amountOfCategoriesParsed)
         {
@@ -264,6 +280,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private void clearButton_Click(object sender, RoutedEventArgs e)
         {
             this.fitbitJournal.ClearEntries();
+            this.updateButton_OnClickButton_Click(sender, e);
         }
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
@@ -297,7 +314,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
         }
 
-        private void mergeAllBox_OnCheckedAllBox_OnChecked(object sender, RoutedEventArgs e)
+        private void mergeAllBox_OnCheckedAllBoxChecked(object sender, RoutedEventArgs e)
         {
             var isChecked = this.mergeAllBox.IsChecked;
             if (isChecked != null)
@@ -331,7 +348,10 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await entryDialog.OpenDialog();
             var entry = entryDialog.FitbitEntry;
             await this.manageAndAddFitbitEntry(entry, entry.Date);
+            this.updateButton_OnClickButton_Click(sender, e);
         }
+
+
 
         #endregion
     }

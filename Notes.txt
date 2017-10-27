@@ -1,1 +1,6 @@
-I completed everything. However, for the first part it ran as I expected, but I am not 100% sure that the data that I am receiving is valid.
+There is a good bit of the functionality not fully implemented
+The add entry works, but is sometimes spotty due the handleWhenFitbitContainsDate method
+The save data is not fully implemented
+Add entry works, but you have to click update to see new results
+Everything else should work fine
+I missing most of the teting and the bitbucket commits

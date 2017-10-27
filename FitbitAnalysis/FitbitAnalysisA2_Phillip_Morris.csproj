@@ -106,7 +106,7 @@
     <Compile Include="View\CustomContentDialog.xaml.cs">
       <DependentUpon>CustomContentDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Report\FitbitJournalOutput.cs" />
+    <Compile Include="Report\FitbitJournalOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
