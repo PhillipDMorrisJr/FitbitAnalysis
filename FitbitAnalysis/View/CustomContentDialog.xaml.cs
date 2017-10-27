@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 // This User Control item template was found at: https://stackoverflow.com/questions/37738128/custom-content-dialog-in-uwp-with-3-buttons
@@ -16,7 +14,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         #region Types and Delegates
 
         /// <summary>
-        ///  Result of button selected
+        ///     Result of button selected
         /// </summary>
         public enum MyResult
         {
@@ -29,13 +27,28 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="CustomContentDialog" /> class.
+        /// </summary>
+        /// <param name="prompt">The prompt.</param>
+        public CustomContentDialog(string prompt)
+        {
+            InitializeComponent();
+            Result = MyResult.Nothing;
+            this.prompt.Text = prompt;
+        }
+
+        #endregion
+
         #region Properties
 
         /// <summary>
-        /// Gets or sets the result.
+        ///     Gets or sets the result.
         /// </summary>
         /// <value>
-        /// The result.
+        ///     The result.
         /// </value>
         public MyResult Result { get; set; }
 
@@ -48,20 +61,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
         ///     The application width
         /// </summary>
         public const int ApplicationWidth = 300;
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="CustomContentDialog" /> class.
-        /// </summary>
-        /// <param name="prompt">The prompt.</param>
-        public CustomContentDialog(string prompt)
-        {
-            this.InitializeComponent();
-            this.Result = MyResult.Nothing;
-            this.prompt.Text = prompt;
-        }
 
         #endregion
 
@@ -77,30 +76,28 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void mergeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.Merge;
-            this.dialog.Hide();
+            Result = MyResult.Merge;
+            dialog.Hide();
         }
 
         private void skipButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.Skip;
-            this.dialog.Hide();
+            Result = MyResult.Skip;
+            dialog.Hide();
         }
 
         private void skipAllButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.SkipAll;
-            this.dialog.Hide();
+            Result = MyResult.SkipAll;
+            dialog.Hide();
         }
 
         private void replaceButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.Replace;
-            this.dialog.Hide();
+            Result = MyResult.Replace;
+            dialog.Hide();
         }
 
         #endregion
-
-
     }
 }

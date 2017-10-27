@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 
@@ -10,42 +8,45 @@ namespace FitbitAnalysis_Phillip_Morris.View
 {
     public sealed partial class EntryDialog : ContentDialog
     {
-        #region Property
-        public FitbitEntry FitbitEntry => this.fitbitEntry;
-        #endregion
         #region Data member
-        private FitbitEntry fitbitEntry;
+
         #endregion
+
         public EntryDialog()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
+
+        #region Property
+
+        public FitbitEntry FitbitEntry { get; private set; }
+
+        #endregion
 
         private async void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
-            var entryDate = this.date.Date.Date;
-            var entrySteps = Int32.Parse(this.steps.Text);
-            var entryDistance =  Double.Parse(this.distance.Text);
-            var entryCaloriesBurned = Int32.Parse(this.caloriesBurned.Text);
-            var entryFloors = Int32.Parse(this.floors.Text);
-            var entryActivityCalories = Int32.Parse(this.activityCalories.Text);
+                var entryDate = date.Date.Date;
+                var entrySteps = Int32.Parse(steps.Text);
+                var entryDistance = Double.Parse(distance.Text);
+                var entryCaloriesBurned = Int32.Parse(caloriesBurned.Text);
+                var entryFloors = Int32.Parse(floors.Text);
+                var entryActivityCalories = Int32.Parse(activityCalories.Text);
 
-             this.fitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned, entryFloors, entryActivityCalories);
-            this.entryDialog.Hide();
+                FitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned, entryFloors,
+                    entryActivityCalories);
+                entryDialog.Hide();
             }
             catch (Exception exception)
             {
-                ContentDialog invalidDialog = new ContentDialog();
+                var invalidDialog = new ContentDialog();
                 invalidDialog.Content = "Invalid input";
                 invalidDialog.CloseButtonText = "Ok";
-                this.Hide();
+                Hide();
                 await invalidDialog.ShowAsync();
-                await this.OpenDialog();
+                await OpenDialog();
             }
-            
-
         }
 
         /// <summary>
