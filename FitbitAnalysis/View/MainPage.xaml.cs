@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -78,7 +79,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await this.generateHistogram();
         }
 
-        private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed, bool binSizeParsed)
+        private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed,
+            bool binSizeParsed)
         {
             if (!thresholdParsed || !amountOfCategoryParsed || !binSizeParsed)
             {
@@ -101,7 +103,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 bool amountOfCategoriesParsed;
 
                 var thresholdResult = this.parseTextBoxTextToInteger(out thresholdParsed, this.threshold);
-                var amountOfCategoriesResult = this.parseTextBoxTextToInteger(out amountOfCategoriesParsed, this.amountOfCategories);
+                var amountOfCategoriesResult =
+                    this.parseTextBoxTextToInteger(out amountOfCategoriesParsed, this.amountOfCategories);
                 var binSizeResult = this.parseTextBoxTextToInteger(out binSizeParsed, this.binSize);
 
                 await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed, binSizeParsed);
@@ -111,7 +114,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
             }
         }
-
 
         private int parseTextBoxTextToInteger(out bool isParsed, TextBox textBox)
         {
@@ -124,7 +126,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             return result;
         }
-
 
         private int handleAmountOfCategoriesParsed(out bool amountOfCategoriesParsed)
         {
@@ -188,7 +189,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             using (var reader = new StreamReader(stream))
             {
                 reader.ReadLine();
-
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
@@ -285,20 +285,37 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
+            var fitbitFileOutput = this.getFitbitFileOutput();
+            var picker = new FileSavePicker();
+
+            picker.FileTypeChoices.Add("file style", new[] {".csv"});
+            picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            picker.SuggestedFileName = "fitbitData";
+
+            var fitbitSaveFile = await picker.PickSaveFileAsync();
+            await FileIO.WriteTextAsync(fitbitSaveFile, fitbitFileOutput);
+        }
+
+        private string getFitbitFileOutput()
+        {
             var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories" + Environment.NewLine;
             foreach (var entry in this.fitbitJournal.Entries)
             {
-                fitbitFileOutput += entry.Date + "," + entry.CaloriesBurned + "," + entry.Steps + "," + entry.Distance +
-                                    "," + entry.Floors + "," + entry.ActivityCalories + Environment.NewLine;
+                fitbitFileOutput = getFitbitEntryOutput(fitbitFileOutput, entry);
             }
+            return fitbitFileOutput;
+        }
 
-            var storageFolder =
-                ApplicationData.Current.LocalFolder;
-            var fitbitSaveFile =
-                await storageFolder.CreateFileAsync("fitbitSavedData.csv",
-                    CreationCollisionOption.ReplaceExisting);
-
-            await FileIO.WriteTextAsync(fitbitSaveFile, fitbitFileOutput);
+        private static string getFitbitEntryOutput(string fitbitFileOutput, FitbitEntry entry)
+        {
+            var currentDate = entry.Date.ToString("d", CultureInfo.CurrentCulture);
+            fitbitFileOutput += currentDate + ",";
+            fitbitFileOutput += entry.CaloriesBurned + ",";
+            fitbitFileOutput += entry.Steps + ",";
+            fitbitFileOutput += entry.Distance + ",";
+            fitbitFileOutput += entry.Floors + ",";
+            fitbitFileOutput += entry.ActivityCalories + Environment.NewLine;
+            return fitbitFileOutput;
         }
 
         private void replaceAllBox_OnChecked(object sender, RoutedEventArgs e)
@@ -349,10 +366,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             var entry = entryDialog.FitbitEntry;
             await this.manageAndAddFitbitEntry(entry, entry.Date);
             this.updateButton_OnClickButton_Click(sender, e);
-
-    }
-
-
+        }
 
         #endregion
     }
