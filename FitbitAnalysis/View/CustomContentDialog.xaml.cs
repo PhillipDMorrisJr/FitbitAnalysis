@@ -1,5 +1,6 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿﻿using System;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 // This User Control item template was found at: https://stackoverflow.com/questions/37738128/custom-content-dialog-in-uwp-with-3-buttons
 
@@ -9,7 +10,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
     ///     Creates a custom content dialog
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
-    public sealed partial class CustomContentDialog : ContentDialog
+    public sealed partial class CustomContentDialog
     {
         #region Types and Delegates
 
@@ -35,8 +36,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// <param name="prompt">The prompt.</param>
         public CustomContentDialog(string prompt)
         {
-            InitializeComponent();
-            Result = MyResult.Nothing;
+            this.InitializeComponent();
+            this.Result = MyResult.Nothing;
             this.prompt.Text = prompt;
         }
 
@@ -76,26 +77,26 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void mergeButton_Click(object sender, RoutedEventArgs e)
         {
-            Result = MyResult.Merge;
-            dialog.Hide();
+            this.Result = MyResult.Merge;
+            this.dialog.Hide();
         }
 
         private void skipButton_Click(object sender, RoutedEventArgs e)
         {
-            Result = MyResult.Skip;
-            dialog.Hide();
+            this.Result = MyResult.Skip;
+            this.dialog.Hide();
         }
 
         private void skipAllButton_Click(object sender, RoutedEventArgs e)
         {
-            Result = MyResult.SkipAll;
-            dialog.Hide();
+            this.Result = MyResult.SkipAll;
+            this.dialog.Hide();
         }
 
         private void replaceButton_Click(object sender, RoutedEventArgs e)
         {
-            Result = MyResult.Replace;
-            dialog.Hide();
+            this.Result = MyResult.Replace;
+            this.dialog.Hide();
         }
 
         #endregion

@@ -349,7 +349,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
             var entry = entryDialog.FitbitEntry;
             await this.manageAndAddFitbitEntry(entry, entry.Date);
             this.updateButton_OnClickButton_Click(sender, e);
-        }
+
+    }
 
 
 

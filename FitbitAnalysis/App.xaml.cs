@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel;
+﻿using System;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -10,7 +11,7 @@ namespace FitbitAnalysis_Phillip_Morris
     /// <summary>
     ///     Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    internal sealed partial class App : Application
+    sealed partial class App
     {
         #region Constructors
 
@@ -20,8 +21,8 @@ namespace FitbitAnalysis_Phillip_Morris
         /// </summary>
         public App()
         {
-            InitializeComponent();
-            Suspending += OnSuspending;
+            this.InitializeComponent();
+            Suspending += this.OnSuspending;
         }
 
         #endregion
@@ -44,7 +45,7 @@ namespace FitbitAnalysis_Phillip_Morris
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                rootFrame.NavigationFailed += this.OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

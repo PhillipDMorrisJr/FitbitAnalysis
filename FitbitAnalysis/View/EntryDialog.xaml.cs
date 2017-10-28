@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 
@@ -8,14 +10,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 {
     public sealed partial class EntryDialog : ContentDialog
     {
-        #region Data member
-
-        #endregion
-
-        public EntryDialog()
-        {
-            InitializeComponent();
-        }
+        #region Properties
 
         #region Property
 
@@ -23,29 +18,43 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         #endregion
 
+        #endregion
+
+        #region Constructors
+
+        public EntryDialog()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion
+
+        #region Methods
+
         private async void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
-                var entryDate = date.Date.Date;
-                var entrySteps = Int32.Parse(steps.Text);
-                var entryDistance = Double.Parse(distance.Text);
-                var entryCaloriesBurned = Int32.Parse(caloriesBurned.Text);
-                var entryFloors = Int32.Parse(floors.Text);
-                var entryActivityCalories = Int32.Parse(activityCalories.Text);
+                var entryDate = this.date.Date.Date;
+                var entrySteps = int.Parse(this.steps.Text);
+                var entryDistance = double.Parse(this.distance.Text);
+                var entryCaloriesBurned = int.Parse(this.caloriesBurned.Text);
+                var entryFloors = int.Parse(this.floors.Text);
+                var entryActivityCalories = int.Parse(this.activityCalories.Text);
 
-                FitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned, entryFloors,
+                this.FitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned,
+                    entryFloors,
                     entryActivityCalories);
-                entryDialog.Hide();
+                this.entryDialog.Hide();
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 var invalidDialog = new ContentDialog();
                 invalidDialog.Content = "Invalid input";
                 invalidDialog.CloseButtonText = "Ok";
                 Hide();
                 await invalidDialog.ShowAsync();
-                await OpenDialog();
+                await this.OpenDialog();
             }
         }
 
@@ -56,5 +65,11 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             await ShowAsync();
         }
+
+        #endregion
+
+        #region Data member
+
+        #endregion
     }
 }

@@ -1,9 +1,64 @@
-﻿namespace FitbitAnalysis_Phillip_Morris.Model
+﻿using System;
+namespace FitbitAnalysis_Phillip_Morris.Model
 {
     /// <summary>
     /// </summary>
     public class FitbitEntry
     {
+
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the date.
+        /// </summary>
+        /// <value>
+        /// The date.
+        /// </value>
+        public DateTime Date { get; }
+
+        /// <summary>
+        /// Gets the steps.
+        /// </summary>
+        /// <value>
+        /// The steps.
+        /// </value>
+        public int Steps { get; }
+
+        /// <summary>
+        /// Gets the distance.
+        /// </summary>
+        /// <value>
+        /// The distance.
+        /// </value>
+        public double Distance { get; }
+
+        /// <summary>
+        /// Gets the calories burned.
+        /// </summary>
+        /// <value>
+        /// The calories burned.
+        /// </value>
+        public int CaloriesBurned { get; }
+
+        /// <summary>
+        /// Gets the floors.
+        /// </summary>
+        /// <value>
+        /// The floors.
+        /// </value>
+        public int Floors { get; }
+
+        /// <summary>
+        /// Gets the activity calories.
+        /// </summary>
+        /// <value>
+        /// The activity calories.
+        /// </value>
+        public int ActivityCalories { get; }
+
+        #endregion
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="FitbitEntry" /> class.
         /// </summary>
@@ -42,23 +97,14 @@
             if (activityCalories < 0)
                 throw new ArgumentException("Activity Calories musts be positive");
 
-            Date = date;
-            Steps = steps;
-            Distance = distance;
-            CaloriesBurned = caloriesBurned;
-            Floors = floors;
-            ActivityCalories = activityCalories;
+            this.Date = date;
+            this.Steps = steps;
+            this.Distance = distance;
+            this.CaloriesBurned = caloriesBurned;
+            this.Floors = floors;
+            this.ActivityCalories = activityCalories;
         }
 
-        #region Properties
-
-        public DateTime Date { get; }
-        public int Steps { get; }
-        public double Distance { get; }
-        public int CaloriesBurned { get; }
-        public int Floors { get; }
-        public int ActivityCalories { get; }
-
-        #endregion
+        
     }
 }

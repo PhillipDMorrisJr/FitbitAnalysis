@@ -1,11 +1,63 @@
-﻿namespace FitbitAnalysis_Phillip_Morris.Model
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace FitbitAnalysis_Phillip_Morris.Model
 {
     /// <summary>
     ///     Manages the category by arranging various collections objects.
     /// </summary>
     public class FitbitJournal
     {
-        #region Data members
+        #region Properties
+
+        /// <summary>
+        ///     Gets the minimum steps.
+        /// </summary>
+        /// <value>
+        ///     The minimum steps.
+        /// </value>
+        public int MinSteps => this.Entries.Min(entry => entry.Steps);
+
+        /// <summary>
+        ///     Gets the maximum steps.
+        /// </summary>
+        /// <value>
+        ///     The maximum steps.
+        /// </value>
+        public int MaxSteps => this.Entries.Max(entry => entry.Steps);
+
+        /// <summary>
+        ///     Gets the entries.
+        /// </summary>
+        /// <value>
+        ///     The entries.
+        /// </value>
+        public List<FitbitEntry> Entries { get; }
+
+        /// <summary>
+        ///     Gets the average steps.
+        /// </summary>
+        /// <value>
+        ///     The average steps.
+        /// </value>
+        public double AverageSteps => this.Entries.Average(entry => entry.Steps);
+
+        /// <summary>
+        ///     Gets the first entry date.
+        /// </summary>
+        /// <value>
+        ///     The first entry date.
+        /// </value>
+        public DateTime FirstEntryDate => this.getAllEntriesOrderedByDate()[0].Date;
+
+        /// <summary>
+        ///     Gets the last entry date.
+        /// </summary>
+        /// <value>
+        ///     The last entry date.
+        /// </value>
+        public DateTime LastEntryDate => this.getAllEntriesOrderedByDate()[this.Entries.Count - 1].Date;
 
         #endregion
 
@@ -16,10 +68,12 @@
         /// </summary>
         public FitbitJournal()
         {
-            Entries = new List<FitbitEntry>();
+            this.Entries = new List<FitbitEntry>();
         }
 
         #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Gets the entries by year.
@@ -30,28 +84,15 @@
         /// </returns>
         public FitbitJournal GetEntriesByYear(int year)
         {
-            var entries = Entries.FindAll(entry => entry.Date.Year == year);
+            var entries = this.Entries.FindAll(entry => entry.Date.Year == year);
             var yearlyJournal = new FitbitJournal();
 
             foreach (var entry in entries)
+            {
                 yearlyJournal.AddEntry(entry);
+            }
             return yearlyJournal;
         }
-
-        #region Properties
-
-        public int MinSteps => Entries.Min(entry => entry.Steps);
-
-        public int MaxSteps => Entries.Max(entry => entry.Steps);
-        public List<FitbitEntry> Entries { get; }
-
-        public double AverageSteps => Entries.Average(entry => entry.Steps);
-        public DateTime FirstEntryDate => getAllEntriesOrderedByDate()[0].Date;
-        public DateTime LastEntryDate => getAllEntriesOrderedByDate()[Entries.Count - 1].Date;
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         ///     Adds the entry.
@@ -59,7 +100,7 @@
         /// <param name="fitbitEntry"> The entry to be added to fitbit collection</param>
         public void AddEntry(FitbitEntry fitbitEntry)
         {
-            Entries.Add(fitbitEntry ?? throw new ArgumentException("Fitbit must not be null"));
+            this.Entries.Add(fitbitEntry ?? throw new ArgumentException("Fitbit must not be null"));
         }
 
         /// <summary>
@@ -69,7 +110,7 @@
         /// <returns></returns>
         public DateTime FindDateBasedOnSteps(int steps)
         {
-            var currentDate = Entries.Find(fitbitEntry => fitbitEntry.Steps == steps).Date;
+            var currentDate = this.Entries.Find(fitbitEntry => fitbitEntry.Steps == steps).Date;
             return currentDate;
         }
 
@@ -82,7 +123,7 @@
         public int CountDaysWithStepsBetween(int lowerBound, int upperBound)
         {
             int count;
-            count = Entries.Count(
+            count = this.Entries.Count(
                 fitbitEntry => fitbitEntry.Steps >= lowerBound && fitbitEntry.Steps <= upperBound);
             return count;
         }
@@ -94,7 +135,7 @@
         /// <returns></returns>
         public int CountDaysWithStepsOver(int bound)
         {
-            var count = Entries.Count(fitbitEntry => fitbitEntry.Steps >= bound);
+            var count = this.Entries.Count(fitbitEntry => fitbitEntry.Steps >= bound);
             return count;
         }
 
@@ -105,7 +146,7 @@
         /// <returns></returns>
         public int CountDaysWithStepsLessThan(int bound)
         {
-            var count = Entries.Count(fitbitEntry => fitbitEntry.Steps <= bound);
+            var count = this.Entries.Count(fitbitEntry => fitbitEntry.Steps <= bound);
             return count;
         }
 
@@ -117,7 +158,7 @@
         /// <returns></returns>
         public List<FitbitEntry> GetEntriesOrderedDatesByMonthAndYear(int month, int year)
         {
-            var copyFitbitEntries = Entries;
+            var copyFitbitEntries = this.Entries;
 
             var fitbitEntriesInYear = copyFitbitEntries.FindAll(fitbitEntry => fitbitEntry.Date.Year == year);
             var fitbitEntriesInMonth = fitbitEntriesInYear.FindAll(fitbitEntry => fitbitEntry.Date.Month == month);
@@ -131,7 +172,7 @@
         /// </summary>
         public void ClearEntries()
         {
-            Entries.Clear();
+            this.Entries.Clear();
         }
 
         /// <summary>
@@ -141,7 +182,7 @@
         /// <returns></returns>
         public FitbitEntry GetEntryByDate(DateTime date)
         {
-            return Entries.Find(fitbitEntry => fitbitEntry.Date.Equals(date));
+            return this.Entries.Find(fitbitEntry => fitbitEntry.Date.Equals(date));
         }
 
         /// <summary>
@@ -150,7 +191,7 @@
         /// <returns></returns>
         public bool IsEmpty()
         {
-            return Entries.Count == 0;
+            return this.Entries.Count == 0;
         }
 
         /// <summary>
@@ -162,7 +203,7 @@
         /// </returns>
         public bool ContainsDate(DateTime date)
         {
-            return Entries.Exists(fitbitEntry => fitbitEntry.Date.Equals(date));
+            return this.Entries.Exists(fitbitEntry => fitbitEntry.Date.Equals(date));
         }
 
         /// <summary>
@@ -171,8 +212,8 @@
         /// <returns></returns>
         private List<FitbitEntry> getAllEntriesOrderedByDate()
         {
-            var fitbitEntriesOrderedByDates = Entries.OrderBy(fitbitEntry => fitbitEntry.Date.Year)
-                .ThenBy(fitbitEntry => fitbitEntry.Date.Month);
+            var fitbitEntriesOrderedByDates = this.Entries.OrderBy(fitbitEntry => fitbitEntry.Date.Year)
+                                                  .ThenBy(fitbitEntry => fitbitEntry.Date.Month);
 
             return fitbitEntriesOrderedByDates.ToList();
         }
@@ -183,8 +224,8 @@
         /// <param name="fitbitEntry">The fitbit entry.</param>
         public void ReplaceMatchingDateEntries(FitbitEntry fitbitEntry)
         {
-            Entries.RemoveAll(entry => entry.Date.Equals(fitbitEntry.Date));
-            AddEntry(fitbitEntry);
+            this.Entries.RemoveAll(entry => entry.Date.Equals(fitbitEntry.Date));
+            this.AddEntry(fitbitEntry);
         }
 
         /// <summary>
@@ -195,7 +236,7 @@
         /// <returns></returns>
         public int CountPerMonthAndYear(int month, int year)
         {
-            var entries = Entries.FindAll(entry => entry.Date.Month == month && entry.Date.Year == year);
+            var entries = this.Entries.FindAll(entry => entry.Date.Month == month && entry.Date.Year == year);
             return entries.Count;
         }
 
