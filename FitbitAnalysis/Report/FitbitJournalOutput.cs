@@ -22,6 +22,10 @@ namespace FitbitAnalysis_Phillip_Morris.Report
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FitbitJournalOutput"/> class.
+        /// </summary>
+        /// <param name="fitbitJournal">The fitbit journal.</param>
         public FitbitJournalOutput(FitbitJournal fitbitJournal)
         {
             this.fitbitJournal = fitbitJournal;

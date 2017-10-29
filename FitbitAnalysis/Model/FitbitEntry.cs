@@ -6,7 +6,6 @@ namespace FitbitAnalysis_Phillip_Morris.Model
     public class FitbitEntry
     {
 
-
         #region Properties
 
         /// <summary>
