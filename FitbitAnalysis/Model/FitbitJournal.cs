@@ -59,6 +59,13 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// </value>
         public DateTime LastEntryDate => this.getAllEntriesOrderedByDate()[this.Entries.Count - 1].Date;
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        public int Count => this.Entries.Count;
         #endregion
 
         #region Constructors

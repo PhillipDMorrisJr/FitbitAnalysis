@@ -1,23 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using FitbitAnalysis_Phillip_Morris.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    ///     Tests the CountDaysWithStepsBetweenTests method in the FitbitJournal class.
+    /// Tests the CountDaysWithStepsOver method in the FitbitJournal class.
     /// </summary>
     [TestClass]
-    public class CountDaysWithStepsBetweenTests
+    public class CountDaysWithStepsOverTests
     {
-        #region Methods
-
         [TestMethod]
         public void WhenNoEntriesInJournal()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
 
-            Assert.AreEqual(0, testJournal.CountDaysWithStepsBetween(0, 100));
+            Assert.AreEqual(0, testJournal.CountDaysWithStepsOver(1000));
         }
 
         [TestMethod]
@@ -28,7 +30,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             testJournal.AddEntry(testEntry);
 
-            Assert.AreEqual(1, testJournal.CountDaysWithStepsBetween(0, 600));
+            Assert.AreEqual(1, testJournal.CountDaysWithStepsOver(200));
         }
 
         [TestMethod]
@@ -36,14 +38,14 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testEntry = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(DateTime.Today, 5000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
+            var testEntry2 = new FitbitEntry(DateTime.Today, 2000, 2.0, 310, 1, 155);
+            var testEntry3 = new FitbitEntry(DateTime.Today, 3000, 2.0, 310, 1, 155);
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
             testJournal.AddEntry(testEntry3);
 
-            Assert.AreEqual(0, testJournal.CountDaysWithStepsBetween(0, 600));
+            Assert.AreEqual(0, testJournal.CountDaysWithStepsOver(5000));
         }
 
         [TestMethod]
@@ -58,7 +60,7 @@ namespace FitbitTests.Model.FitbitJournal
             testJournal.AddEntry(testEntry2);
             testJournal.AddEntry(testEntry3);
 
-            Assert.AreEqual(1, testJournal.CountDaysWithStepsBetween(0, 600));
+            Assert.AreEqual(1, testJournal.CountDaysWithStepsOver(1100));
         }
 
         [TestMethod]
@@ -75,9 +77,7 @@ namespace FitbitTests.Model.FitbitJournal
             testJournal.AddEntry(testEntry3);
             testJournal.AddEntry(testEntry4);
 
-            Assert.AreEqual(2, testJournal.CountDaysWithStepsBetween(2, 900));
+            Assert.AreEqual(2, testJournal.CountDaysWithStepsOver(900));
         }
-
-        #endregion
     }
 }
