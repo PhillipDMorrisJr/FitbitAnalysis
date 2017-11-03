@@ -6,12 +6,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="loadDialog"
-    Title="Attention">
+    Title="Attention" Height="672" Width="516">
 
-    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300" CanDrag="True" Margin="0,0,0,100">
-        <TextBlock x:Name="prompt" Text="Would you like to merge this file" Margin="0,5,1,10" HorizontalAlignment="Right" Width="289" />
+    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True" Margin="0,0,0,100">
+        <TextBlock Text="Would you like to merge this file?" Margin="0,5,51,10" HorizontalAlignment="Right" Width="289" />
         <Button  Content="Merge" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,108,0,-105" Click="mergeButton_OnClick"/>
-        <Button  Content="Replace" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="103,108,0,-105" Click="replaceButton_OnClick"/>
-        <Button  Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="205,108,0,-105" Click="cancelButton_OnClick"/>
+        <Button  Content="Merge All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="78,108,0,-105" Click="mergeAllButton_OnClick"/>
+        <Button  Content="Replace All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="167,108,0,-105" Click="replaceButton_OnClick"/>
+        <Button  Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,108,0,-105" Click="cancelButton_OnClick" Width="72" Height="32"/>
     </Grid>
 </ContentDialog>

@@ -20,6 +20,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
     public sealed partial class OnLoadDialog : ContentDialog
     {
         public bool Merge { get; private set; }
+        public bool MergeAll { get; private set; }
         public bool Replace { get; private set; }
         public bool Cancel { get; private set; }
 
@@ -32,6 +33,11 @@ namespace FitbitAnalysis_Phillip_Morris.View
         }
 
         private void mergeButton_OnClick(object sender, RoutedEventArgs args)
+        {
+            this.Merge = true;
+            this.loadDialog.Hide();
+        }
+        private void mergeAllButton_OnClick(object sender, RoutedEventArgs args)
         {
             this.Merge = true;
             this.loadDialog.Hide();

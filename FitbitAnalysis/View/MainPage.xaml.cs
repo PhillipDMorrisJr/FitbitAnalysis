@@ -77,12 +77,16 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 OnLoadDialog loadDialog = new OnLoadDialog();
                 await loadDialog.ShowAsync();
 
-                this.mergeAll = loadDialog.Merge;
+                this.mergeAll = loadDialog.MergeAll;
                 this.replaceAll = loadDialog.Replace;
                 if (loadDialog.Cancel)
                 {
                     
                     return;
+                }
+                if (this.replaceAll)
+                {
+                    this.clearButton_Click(sender, e);
                 }
                 
             }
@@ -139,18 +143,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 textBox.Text = Convert.ToString(result);
             }
             return result;
-        }
-
-        private int handleAmountOfCategoriesParsed(out bool amountOfCategoriesParsed)
-        {
-            var amountOfCategoriesText = this.amountOfCategories.Text;
-            int amountOfCategoriesResult;
-            amountOfCategoriesParsed = int.TryParse(amountOfCategoriesText, out amountOfCategoriesResult);
-            if (amountOfCategoriesParsed)
-            {
-                this.amountOfCategories.Text = amountOfCategoriesResult.ToString();
-            }
-            return amountOfCategoriesResult;
         }
 
         private int handleWhenThresholdTextParsed(out bool thresholdParsed)
