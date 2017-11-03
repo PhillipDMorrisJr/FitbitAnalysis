@@ -81,7 +81,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 this.replaceAll = loadDialog.Replace;
                 if (loadDialog.Cancel)
                 {
-                    
                     return;
                 }
                 if (this.replaceAll)
@@ -145,18 +144,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             return result;
         }
 
-        private int handleWhenThresholdTextParsed(out bool thresholdParsed)
-        {
-            var thresholdText = this.threshold.Text;
-            int thresholdResult;
-            thresholdParsed = int.TryParse(thresholdText, out thresholdResult);
-            if (thresholdParsed)
-            {
-                this.threshold.Text = thresholdResult.ToString();
-            }
-            return thresholdResult;
-        }
-
         private void replaceEntries()
         {
             foreach (var fitbitEntry in entriesToReplace)
@@ -187,7 +174,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             if (file == null)
             {
-                throw new ArgumentException("File Must not be null.");
+                return;
             }
             char[] seperator = {','};
             var stream = await file.OpenStreamForReadAsync();
