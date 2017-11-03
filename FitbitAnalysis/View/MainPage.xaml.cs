@@ -35,8 +35,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private static List<FitbitEntry> entriesToReplace;
         private readonly FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
-        private bool replaceAllBoxChecked;
-        private bool mergeAllBoxChecked;
+        private bool replaceAll;
+        private bool mergeAll;
         private bool skipAll;
 
         #endregion
@@ -72,6 +72,20 @@ namespace FitbitAnalysis_Phillip_Morris.View
             duplicatedDatesNotToAdd = new List<DateTime>();
 
             var file = await pickFile();
+            if (!this.fitbitJournal.IsEmpty())
+            {
+                OnLoadDialog loadDialog = new OnLoadDialog();
+                await loadDialog.ShowAsync();
+
+                this.mergeAll = loadDialog.Merge;
+                this.replaceAll = loadDialog.Replace;
+                if (loadDialog.Cancel)
+                {
+                    
+                    return;
+                }
+                
+            }
             await this.parseFile(file);
 
             this.replaceEntries();
@@ -209,7 +223,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task manageAndAddFitbitEntry(FitbitEntry fitbitEntry, DateTime date)
         {
-            if (this.mergeAllBoxChecked)
+            if (this.mergeAll)
             {
                 this.fitbitJournal.AddEntry(fitbitEntry);
             }
@@ -253,20 +267,20 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task handleWhenThereAreDuplicateDates(FitbitEntry fitbitEntry)
         {
-            var duplicateEntryDialog = new CustomContentDialog("There are other entries on " + fitbitEntry.Date);
+            var duplicateEntryDialog = new DuplicateEntryFoundDialog("There are other entries on " + fitbitEntry.Date);
             await duplicateEntryDialog.OpenDialog();
 
             switch (duplicateEntryDialog.Result)
             {
-                case CustomContentDialog.MyResult.Skip:
+                case DuplicateEntryFoundDialog.MyResult.Skip:
                     break;
-                case CustomContentDialog.MyResult.Replace:
+                case DuplicateEntryFoundDialog.MyResult.Replace:
                     entriesToReplace.Add(fitbitEntry);
                     break;
-                case CustomContentDialog.MyResult.SkipAll:
+                case DuplicateEntryFoundDialog.MyResult.SkipAll:
                     this.skipAll = true;
                     break;
-                case CustomContentDialog.MyResult.Merge:
+                case DuplicateEntryFoundDialog.MyResult.Merge:
                     this.addToFitbitCollection(fitbitEntry);
                     break;
             }
@@ -318,50 +332,9 @@ namespace FitbitAnalysis_Phillip_Morris.View
             return fitbitFileOutput;
         }
 
-        private void replaceAllBox_OnChecked(object sender, RoutedEventArgs e)
-        {
-            var isChecked = this.replaceAllBox.IsChecked;
-            if (isChecked != null)
-            {
-                this.replaceAllBoxChecked = isChecked.Value;
-            }
-            if (this.replaceAllBoxChecked)
-            {
-                this.setEnable(this.mergeAllBox, false);
-            }
-        }
-
-        private void mergeAllBox_OnCheckedAllBoxChecked(object sender, RoutedEventArgs e)
-        {
-            var isChecked = this.mergeAllBox.IsChecked;
-            if (isChecked != null)
-            {
-                this.mergeAllBoxChecked = isChecked.Value;
-            }
-            if (this.mergeAllBoxChecked)
-            {
-                this.setEnable(this.replaceAllBox, false);
-            }
-        }
-
-        private void replaceAllBox_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            this.setEnable(this.mergeAllBox, true);
-        }
-
-        private void mergeAllBox_OnUnchecked(object sender, RoutedEventArgs e)
-        {
-            this.setEnable(this.replaceAllBox, true);
-        }
-
-        private void setEnable(CheckBox checkBox, bool isEnabled)
-        {
-            checkBox.IsEnabled = isEnabled;
-        }
-
         private async void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
-            var entryDialog = new EntryDialog();
+            var entryDialog = new AddEntryDialog();
             await entryDialog.OpenDialog();
             var entry = entryDialog.FitbitEntry;
             await this.manageAndAddFitbitEntry(entry, entry.Date);

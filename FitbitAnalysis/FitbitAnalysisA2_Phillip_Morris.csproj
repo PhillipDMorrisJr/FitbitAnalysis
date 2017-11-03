@@ -95,17 +95,23 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EntryDialog.xaml.cs">
-      <DependentUpon>EntryDialog.xaml</DependentUpon>
+    <Compile Include="View\ContentDialogs\AddEntryDialog.xaml.cs">
+      <DependentUpon>AddEntryDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentDialogs\CustomContentDialog.xaml.cs">
+      <DependentUpon>CustomContentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentDialogs\DuplicateEntryFoundDialog.xaml.cs">
+      <DependentUpon>DuplicateEntryFoundDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContentDialogs\OnLoadDialog.xaml.cs">
+      <DependentUpon>OnLoadDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FitbitJournal.cs" />
     <Compile Include="Model\FitbitEntry.cs" />
-    <Compile Include="View\CustomContentDialog.xaml.cs">
-      <DependentUpon>CustomContentDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Report\FitbitJournalOutput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,17 +136,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\EntryDialog.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\ContentDialogs\AddEntryDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentDialogs\CustomContentDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentDialogs\DuplicateEntryFoundDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ContentDialogs\OnLoadDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\CustomContentDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
-﻿﻿using System;
+﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 // This User Control item template was found at: https://stackoverflow.com/questions/37738128/custom-content-dialog-in-uwp-with-3-buttons
 
@@ -10,21 +11,31 @@ namespace FitbitAnalysis_Phillip_Morris.View
     ///     Creates a custom content dialog
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
-    public sealed partial class CustomContentDialog
+    public sealed partial class CustomContentDialog : ContentDialog
     {
         #region Types and Delegates
 
         /// <summary>
-        ///     Result of button selected
+        ///  Result of button selected
         /// </summary>
         public enum MyResult
         {
             Nothing,
-            Skip,
-            SkipAll,
-            Replace,
-            Merge
+            Yes,
+            No,
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        /// <value>
+        /// The result.
+        /// </value>
+        public MyResult Result { get; set; }
 
         #endregion
 
@@ -43,28 +54,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        ///     Gets or sets the result.
-        /// </summary>
-        /// <value>
-        ///     The result.
-        /// </value>
-        public MyResult Result { get; set; }
-
-        /// <summary>
-        ///     The application height
-        /// </summary>
-        public const int ApplicationHeight = 300;
-
-        /// <summary>
-        ///     The application width
-        /// </summary>
-        public const int ApplicationWidth = 300;
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -75,27 +64,26 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await ShowAsync();
         }
 
-        private void mergeButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///     Handles the Click event of the yesButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void yesButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.Merge;
+            this.Result = MyResult.Yes;
             this.dialog.Hide();
         }
 
-        private void skipButton_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///     Handles the Click event of the noButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void noButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Result = MyResult.Skip;
-            this.dialog.Hide();
-        }
-
-        private void skipAllButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Result = MyResult.SkipAll;
-            this.dialog.Hide();
-        }
-
-        private void replaceButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Result = MyResult.Replace;
+            this.Result = MyResult.No;
+            // Close the dialog
             this.dialog.Hide();
         }
 

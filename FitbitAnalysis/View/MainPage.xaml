@@ -21,9 +21,7 @@
         <Button Grid.Column="0" x:Name="updateButton" Content="Update" HorizontalAlignment="Left" Margin="609,107,0,0" VerticalAlignment="Top" Click="updateButton_OnClickButton_Click" Height="32" Width="69"/>
         <Button Grid.Column="0" x:Name="clearButton" Content="Clear" HorizontalAlignment="Left" Margin="242,477,0,0" VerticalAlignment="Top" Click="clearButton_Click" Height="32" Width="52"/>
         <Button Grid.Column="0" x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Margin="299,477,0,0" VerticalAlignment="Top" Click="saveButton_Click" Height="32" Width="52" RenderTransformOrigin="1,-2.188"/>
-        <CheckBox Grid.Column="0" x:Name="replaceAllBox" Content="Replace All Data On Load" HorizontalAlignment="Left" Margin="110,550,0,0" VerticalAlignment="Top" Checked="replaceAllBox_OnChecked" Unchecked="replaceAllBox_OnUnchecked"/>
-        <CheckBox Grid.Column="0" x:Name="mergeAllBox" Content="Merge All Data On Load" HorizontalAlignment="Left" Margin="415,550,0,0" VerticalAlignment="Top" Checked="mergeAllBox_OnCheckedAllBoxChecked" Unchecked="mergeAllBox_OnUnchecked"/>
-        <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="356,477,0,0" Click="addEntry_OnClick"/>
+        <Button Grid.Column="0" Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="356,477,0,0" Click="addEntry_OnClick"/>
         <TextBlock Grid.Column="0" HorizontalAlignment="Left" Margin="446,113,0,0" TextWrapping="Wrap" Text="Bin Size:" VerticalAlignment="Top" RenderTransformOrigin="0.061,1.65" Height="26" Width="101"/>
         <TextBox Grid.Column="0" HorizontalAlignment="Left" x:Name="binSize" Margin="507,107,0,0" TextWrapping="Wrap" Text="10" VerticalAlignment="Top" RenderTransformOrigin="0.436,1.281" Height="32" Width="40"/>
     </Grid>

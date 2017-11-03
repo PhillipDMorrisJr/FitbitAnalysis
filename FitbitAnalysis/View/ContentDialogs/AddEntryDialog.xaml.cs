@@ -8,7 +8,7 @@ using FitbitAnalysis_Phillip_Morris.Model;
 
 namespace FitbitAnalysis_Phillip_Morris.View
 {
-    public sealed partial class EntryDialog : ContentDialog
+    public sealed partial class AddEntryDialog : ContentDialog
     {
         #region Properties
 
@@ -22,7 +22,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         #region Constructors
 
-        public EntryDialog()
+        public AddEntryDialog()
         {
             this.InitializeComponent();
         }
