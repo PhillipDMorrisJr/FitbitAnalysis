@@ -51,21 +51,20 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     entryFloors,
                     entryActivityCalories);
                 this.FitbitEntry = fitbitEntry;
-                
+                this.doneAddingEntry_OnClick(sender, e);
             }
             catch (FormatException)
             {
                 this.IsGoodFormat = false;
+                this.doneAddingEntry_OnClick(sender, e);
+            }
+            catch (ArgumentException)
+            {
+                this.IsGoodFormat = false;
+                this.doneAddingEntry_OnClick(sender, e);
             }
 
-        }
 
-        /// <summary>
-        ///     Opens the dialog.
-        /// </summary>
-        public async Task OpenDialog()
-        {
-            await ShowAsync();
         }
 
         #endregion

@@ -316,14 +316,14 @@ namespace FitbitAnalysis_Phillip_Morris.View
             try
             {
                 var entryDialog = new AddEntryDialog();
-                await entryDialog.OpenDialog();
+                await entryDialog.ShowAsync();
                 var entry = entryDialog.FitbitEntry;
                 if (entry == null)
                 {
                     if (!entryDialog.IsGoodFormat)
                     {
                         var formatDialog = new ContentDialog {
-                            Content = "Steps, Calories and Floors are integers and the distance can be a double",
+                            Content = "The distance must be positive and the steps, calories and floors must be positive integers. The entry's date can not come before the current date.",
                             CloseButtonText = "Okay"
                         };
                         await formatDialog.ShowAsync();

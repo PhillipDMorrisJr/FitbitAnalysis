@@ -85,6 +85,8 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         {
             if (date == null)
                 throw new ArgumentException("Date can not be  null");
+            if (date > DateTime.Now)
+                throw new ArgumentException("Date can not be after today");
             if (steps < 0)
                 throw new ArgumentException("Steps musts be positive");
             if (distance < 0)
