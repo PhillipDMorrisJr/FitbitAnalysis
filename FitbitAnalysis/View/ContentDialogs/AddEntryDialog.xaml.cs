@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
 using FitbitAnalysis_Phillip_Morris.Model;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -13,17 +9,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
 {
     public sealed partial class AddEntryDialog : ContentDialog
     {
-        #region Properties
-
-        #region Property
-
-        public FitbitEntry FitbitEntry { get; private set; }
-        public bool IsGoodFormat { get; private set; }
-
-        #endregion
-
-        #endregion
-
         #region Constructors
 
         public AddEntryDialog()
@@ -49,7 +34,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
                 var fitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned,
                     entryFloors,
-                    entryActivityCalories);
+                    entryActivityCalories, new TimeSpan());
                 this.FitbitEntry = fitbitEntry;
                 this.doneAddingEntry_OnClick(sender, e);
             }
@@ -63,19 +48,24 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 this.IsGoodFormat = false;
                 this.doneAddingEntry_OnClick(sender, e);
             }
-
-
         }
+
+        private void doneAddingEntry_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.entryDialog.Hide();
+        }
+
+        #endregion
+
+        #region Property
+
+        public FitbitEntry FitbitEntry { get; private set; }
+        public bool IsGoodFormat { get; private set; }
 
         #endregion
 
         #region Data member
 
         #endregion
-
-        private void doneAddingEntry_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.entryDialog.Hide();
-        }
     }
 }

@@ -14,8 +14,8 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testDate = new DateTime(2017, 11, 2);
-            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate, 2000, 2.0, 310, 1, 155);
+            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate, 2000, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry1);
             testJournal.ReplaceMatchingDateEntries(testEntry2);
@@ -28,8 +28,8 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testDate = new DateTime(2017, 11, 2);
-            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155);
+            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry1);
             testJournal.ReplaceMatchingDateEntries(testEntry2);
@@ -42,8 +42,8 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testDate = new DateTime(2017, 11, 2);
-            var testEntry1 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 740, 1, 155);
+            var testEntry1 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 740, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry1);
             testJournal.ReplaceMatchingDateEntries(testEntry2);
@@ -56,8 +56,8 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testDate = new DateTime(2017, 11, 2);
-            var testEntry1 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 5, 155);
+            var testEntry1 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 5, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry1);
             testJournal.ReplaceMatchingDateEntries(testEntry2);
@@ -70,8 +70,8 @@ namespace FitbitTests.Model.FitbitJournal
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
             var testDate = new DateTime(2017, 11, 2);
-            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 72);
+            var testEntry1 = new FitbitEntry(testDate, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate, 500, 75.0, 310, 1, 72, new TimeSpan());
 
             testJournal.AddEntry(testEntry1);
             testJournal.ReplaceMatchingDateEntries(testEntry2);

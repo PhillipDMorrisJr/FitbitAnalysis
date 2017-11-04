@@ -194,7 +194,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     var activityCalories = int.Parse(input[5]);
                     var floors = int.Parse(input[4]);
                     var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
-                        floors);
+                        floors, new TimeSpan());
                     await this.manageAndAddFitbitEntry(fitbitEntry, date);
                 }
             }

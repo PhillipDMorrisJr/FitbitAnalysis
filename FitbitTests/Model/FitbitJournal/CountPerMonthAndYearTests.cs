@@ -22,7 +22,7 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenOnlyOneInJournalAndMatches()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
 
@@ -33,13 +33,13 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleSameYearAndMonthInJournalAndNoneMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            DateTime testDate1 = new DateTime(2017, 11, 02);
-            DateTime testDate2 = new DateTime(2017, 11, 05);
-            DateTime testDate3 = new DateTime(2017, 11, 20);
+            DateTime testDate1 = new DateTime(2017, 11, 1);
+            DateTime testDate2 = new DateTime(2017, 11, 2);
+            DateTime testDate3 = new DateTime(2017, 11, 3);
 
-            var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(testDate3, 3000, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(testDate3, 3000, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
@@ -52,13 +52,13 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleDifferentYearAndMonthInJournalAndOneMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            DateTime testDate1 = new DateTime(2015, 9, 02);
-            DateTime testDate2 = new DateTime(2016, 10, 05);
-            DateTime testDate3 = new DateTime(2017, 11, 20);
+            DateTime testDate1 = new DateTime(2015, 9, 2);
+            DateTime testDate2 = new DateTime(2016, 10, 5);
+            DateTime testDate3 = new DateTime(2017, 11, 3);
 
-            var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(testDate3, 3000, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(testDate3, 3000, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
