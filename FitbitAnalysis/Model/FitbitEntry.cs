@@ -79,7 +79,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// Steps musts be positive
         /// or
         /// floorCountTracker musts be positive
-        /// or
+        /// or 
         /// activityCaloriesTracker musts be positive</exception>
         public FitbitEntry(DateTime date, int steps, double distance, int caloriesBurned, int floors,
             int activityCalories, TimeSpan time)
