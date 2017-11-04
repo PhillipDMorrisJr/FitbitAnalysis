@@ -56,10 +56,12 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// </value>
         public int ActivityCalories { get; }
 
+        public TimeSpan Time {get;}
+
         #endregion
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FitbitEntry" /> class.
+        /// Initializes a new instance of the <see cref="FitbitEntry" /> class.
         /// </summary>
         /// <param name="date">The date.</param>
         /// <param name="steps">The steps.</param>
@@ -67,24 +69,25 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <param name="caloriesBurned">The calories burned.</param>
         /// <param name="floors">The floors.</param>
         /// <param name="activityCalories">The activity calories.</param>
-        /// <exception cref="ArgumentException">
-        ///     Date can not be  null
-        ///     or
-        ///     Steps musts be positive
-        ///     or
-        ///     Distance musts be positive
-        ///     or
-        ///     Steps musts be positive
-        ///     or
-        ///     floorCountTracker musts be positive
-        ///     or
-        ///     activityCaloriesTracker musts be positive
-        /// </exception>
+        /// <param name="time">The time.</param>
+        /// <exception cref="ArgumentException">Date can not be  null or occur after the current date
+        /// or
+        /// Steps musts be positive
+        /// or
+        /// Distance musts be positive
+        /// or
+        /// Steps musts be positive
+        /// or
+        /// floorCountTracker musts be positive
+        /// or
+        /// activityCaloriesTracker musts be positive</exception>
         public FitbitEntry(DateTime date, int steps, double distance, int caloriesBurned, int floors,
-            int activityCalories)
+            int activityCalories, TimeSpan time)
         {
             if (date == null)
-                throw new ArgumentException("Date can not be  null");
+                throw new ArgumentException("Date can not be null");
+            if (time == null)
+                throw new ArgumentException("Time can not be null");
             if (date > DateTime.Now)
                 throw new ArgumentException("Date can not be after today");
             if (steps < 0)
@@ -97,6 +100,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
                 throw new ArgumentException("Floors musts be positive");
             if (activityCalories < 0)
                 throw new ArgumentException("Activity Calories musts be positive");
+            
 
             this.Date = date;
             this.Steps = steps;
@@ -104,6 +108,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.CaloriesBurned = caloriesBurned;
             this.Floors = floors;
             this.ActivityCalories = activityCalories;
+            this.Time = time;
         }
 
         
