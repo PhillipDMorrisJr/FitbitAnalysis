@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using FitbitAnalysis_Phillip_Morris.Model;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -15,6 +18,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         #region Property
 
         public FitbitEntry FitbitEntry { get; private set; }
+        public bool IsGoodFormat { get; private set; }
 
         #endregion
 
@@ -25,13 +29,14 @@ namespace FitbitAnalysis_Phillip_Morris.View
         public AddEntryDialog()
         {
             this.InitializeComponent();
+            this.IsGoodFormat = true;
         }
 
         #endregion
 
         #region Methods
 
-        private async void addEntry_OnClick(object sender, RoutedEventArgs e)
+        private void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -42,20 +47,17 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 var entryFloors = int.Parse(this.floors.Text);
                 var entryActivityCalories = int.Parse(this.activityCalories.Text);
 
-                this.FitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned,
+                var fitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned,
                     entryFloors,
                     entryActivityCalories);
-                this.entryDialog.Hide();
+                this.FitbitEntry = fitbitEntry;
+                
             }
-            catch (Exception)
+            catch (FormatException)
             {
-                var invalidDialog = new ContentDialog();
-                invalidDialog.Content = "Invalid input";
-                invalidDialog.CloseButtonText = "Ok";
-                Hide();
-                await invalidDialog.ShowAsync();
-                await this.OpenDialog();
+                this.IsGoodFormat = false;
             }
+
         }
 
         /// <summary>
@@ -71,5 +73,10 @@ namespace FitbitAnalysis_Phillip_Morris.View
         #region Data member
 
         #endregion
+
+        private void doneAddingEntry_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.entryDialog.Hide();
+        }
     }
 }

@@ -74,7 +74,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             var file = await pickFile();
             if (!this.fitbitJournal.IsEmpty())
             {
-                OnLoadDialog loadDialog = new OnLoadDialog();
+                var loadDialog = new OnLoadDialog();
                 await loadDialog.ShowAsync();
 
                 this.mergeAll = loadDialog.MergeAll;
@@ -87,7 +87,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 {
                     this.clearButton_Click(sender, e);
                 }
-                
             }
             await this.parseFile(file);
 
@@ -101,8 +100,9 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             if (!thresholdParsed || !amountOfCategoryParsed || !binSizeParsed)
             {
-                var invalidInpuDialog = new ContentDialog();
-                invalidInpuDialog.Content = "All input must be numbers";
+                var invalidInpuDialog = new ContentDialog {
+                    Content = "All input must be numbers"
+                };
                 await invalidInpuDialog.ShowAsync();
             }
         }
@@ -313,11 +313,38 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async void addEntry_OnClick(object sender, RoutedEventArgs e)
         {
-            var entryDialog = new AddEntryDialog();
-            await entryDialog.OpenDialog();
-            var entry = entryDialog.FitbitEntry;
-            await this.manageAndAddFitbitEntry(entry, entry.Date);
-            this.updateButton_OnClickButton_Click(sender, e);
+            try
+            {
+                var entryDialog = new AddEntryDialog();
+                await entryDialog.OpenDialog();
+                var entry = entryDialog.FitbitEntry;
+                if (entry == null)
+                {
+                    if (!entryDialog.IsGoodFormat)
+                    {
+                        var formatDialog = new ContentDialog {
+                            Content = "Steps, Calories and Floors are integers and the distance can be a double",
+                            CloseButtonText = "Okay"
+                        };
+                        await formatDialog.ShowAsync();
+                    }
+                    else
+                    {
+                        var entryNotAddeddialog = new ContentDialog {
+                            Content = "Entry not added",
+                            CloseButtonText = "Okay"
+                        };
+                        await entryNotAddeddialog.ShowAsync();
+                    }
+                    return;
+                }
+
+                await this.manageAndAddFitbitEntry(entry, entry.Date);
+                this.updateButton_OnClickButton_Click(sender, e);
+            }
+            catch (FormatException)
+            {
+            }
         }
 
         #endregion
