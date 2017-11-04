@@ -8,7 +8,7 @@ using FitbitAnalysis_Phillip_Morris.Model;
 
 namespace FitbitAnalysis_Phillip_Morris.View
 {
-    public sealed partial class AddEntryDialog : ContentDialog
+    public sealed partial class AddEntryDialog
     {
         #region Properties
 
@@ -49,9 +49,10 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             catch (Exception)
             {
-                var invalidDialog = new ContentDialog();
-                invalidDialog.Content = "Invalid input";
-                invalidDialog.CloseButtonText = "Ok";
+                var invalidDialog = new ContentDialog {
+                    Content = "Invalid input",
+                    CloseButtonText = "Ok"
+                };
                 Hide();
                 await invalidDialog.ShowAsync();
                 await this.OpenDialog();

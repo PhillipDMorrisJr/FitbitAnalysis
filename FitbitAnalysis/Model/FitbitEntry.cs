@@ -1,62 +1,64 @@
 ﻿using System;
+
 namespace FitbitAnalysis_Phillip_Morris.Model
 {
     /// <summary>
     /// </summary>
     public class FitbitEntry
     {
-
         #region Properties
 
         /// <summary>
-        /// Gets the date.
+        ///     Gets the date.
         /// </summary>
         /// <value>
-        /// The date.
+        ///     The date.
         /// </value>
         public DateTime Date { get; }
 
         /// <summary>
-        /// Gets the steps.
+        ///     Gets the steps.
         /// </summary>
         /// <value>
-        /// The steps.
+        ///     The steps.
         /// </value>
         public int Steps { get; }
 
         /// <summary>
-        /// Gets the distance.
+        ///     Gets the distance.
         /// </summary>
         /// <value>
-        /// The distance.
+        ///     The distance.
         /// </value>
         public double Distance { get; }
 
         /// <summary>
-        /// Gets the calories burned.
+        ///     Gets the calories burned.
         /// </summary>
         /// <value>
-        /// The calories burned.
+        ///     The calories burned.
         /// </value>
         public int CaloriesBurned { get; }
 
         /// <summary>
-        /// Gets the floors.
+        ///     Gets the floors.
         /// </summary>
         /// <value>
-        /// The floors.
+        ///     The floors.
         /// </value>
         public int Floors { get; }
 
         /// <summary>
-        /// Gets the activity calories.
+        ///     Gets the activity calories.
         /// </summary>
         /// <value>
-        /// The activity calories.
+        ///     The activity calories.
         /// </value>
         public int ActivityCalories { get; }
 
         #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="FitbitEntry" /> class.
@@ -84,17 +86,29 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             int activityCalories)
         {
             if (date == null)
+            {
                 throw new ArgumentException("Date can not be  null");
+            }
             if (steps < 0)
+            {
                 throw new ArgumentException("Steps musts be positive");
+            }
             if (distance < 0)
+            {
                 throw new ArgumentException("Distance musts be positive");
+            }
             if (caloriesBurned < 0)
+            {
                 throw new ArgumentException("Calories burned musts be positive");
+            }
             if (floors < 0)
+            {
                 throw new ArgumentException("Floors musts be positive");
+            }
             if (activityCalories < 0)
+            {
                 throw new ArgumentException("Activity Calories musts be positive");
+            }
 
             this.Date = date;
             this.Steps = steps;
@@ -104,6 +118,6 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.ActivityCalories = activityCalories;
         }
 
-        
+        #endregion
     }
 }

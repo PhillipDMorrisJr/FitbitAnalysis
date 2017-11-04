@@ -63,8 +63,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         /// </summary>
         private void initializeOutputStatments()
         {
-            this.outputStatements = new List<string>();
-            this.outputStatements.Add(Environment.NewLine + "Annual Statistics: ");
+            this.outputStatements = new List<string> {Environment.NewLine + "Annual Statistics: "};
             this.addStepStatements(this.fitbitJournal);
             this.addBoundaryStatements(this.fitbitJournal);
             this.generateYearlyOutput();

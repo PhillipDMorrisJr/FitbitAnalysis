@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-
 // This User Control item template was found at: https://stackoverflow.com/questions/37738128/custom-content-dialog-in-uwp-with-3-buttons
 
 namespace FitbitAnalysis_Phillip_Morris.View
@@ -11,7 +9,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
     ///     Creates a custom content dialog
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
-    public sealed partial class CustomContentDialog : ContentDialog
+    public sealed partial class CustomContentDialog
     {
         #region Types and Delegates
 

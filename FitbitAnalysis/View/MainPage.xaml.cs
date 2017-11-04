@@ -101,8 +101,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             if (!thresholdParsed || !amountOfCategoryParsed || !binSizeParsed)
             {
-                var invalidInpuDialog = new ContentDialog();
-                invalidInpuDialog.Content = "All input must be numbers";
+                var invalidInpuDialog = new ContentDialog {Content = "All input must be numbers"};
                 await invalidInpuDialog.ShowAsync();
             }
         }

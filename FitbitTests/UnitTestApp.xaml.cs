@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace FitbitTests
@@ -20,7 +10,7 @@ namespace FitbitTests
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : Application
+    sealed partial class App
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -29,7 +19,7 @@ namespace FitbitTests
         public App()
         {
             this.InitializeComponent();
-            this.Suspending += OnSuspending;
+            Suspending += this.OnSuspending;
         }
 
         /// <summary>
@@ -43,7 +33,7 @@ namespace FitbitTests
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 
@@ -56,7 +46,7 @@ namespace FitbitTests
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
-                rootFrame.NavigationFailed += OnNavigationFailed;
+                rootFrame.NavigationFailed += this.OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {

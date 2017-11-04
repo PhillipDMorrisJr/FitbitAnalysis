@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FitbitAnalysis_Phillip_Morris.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -51,7 +47,7 @@ namespace FitbitTests.Model.FitbitJournal
         }
 
         [TestMethod]
-        [ExpectedException(typeof(System.ArgumentException))]
+        [ExpectedException(typeof(ArgumentException))]
         public void WhenAddingNullToJournal()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
