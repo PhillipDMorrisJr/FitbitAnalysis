@@ -6,6 +6,12 @@ namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
     /// Tests the CountPerMonthAndYearTests method in the FitbitJournal class.
+    /// 
+    /// Tests:
+    /// No entries in Journal.
+    /// Only 1 entry in Jounal.
+    /// Multiple entries in Journal and none match criteria.
+    /// Multiple entries in Journal and 1 match criteria.
     /// </summary>
     [TestClass]
     public class CountPerMonthAndYearTests

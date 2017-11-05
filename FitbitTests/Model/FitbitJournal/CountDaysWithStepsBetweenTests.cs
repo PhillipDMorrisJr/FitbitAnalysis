@@ -6,6 +6,13 @@ namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
     ///     Tests the CountDaysWithStepsBetweenTests method in the FitbitJournal class.
+    /// 
+    /// Tests:
+    /// No entries in journal.
+    /// 1 entry in journal and matches.
+    /// Multiple entries in journal and none match criteria.
+    /// Multiple entries in journal and 1 matches criteria.
+    /// Multiple entries in journal and multiple match criteria.
     /// </summary>
     [TestClass]
     public class CountDaysWithStepsBetweenTests

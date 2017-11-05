@@ -6,6 +6,12 @@ namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
     /// Tests the AddEntry method of the FitbitJournal class.
+    /// 
+    /// Tests:
+    /// No entries added to journal.
+    /// 1 entry in journal added.
+    /// Multiple entries added to journal.
+    /// Adding null entry throws NullArgumentException.
     /// </summary>
     [TestClass]
     public class AddEntryTests

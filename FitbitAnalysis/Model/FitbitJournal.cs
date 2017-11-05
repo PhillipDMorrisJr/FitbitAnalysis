@@ -24,6 +24,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// </summary>
         /// <value>Timmespan the of average of monthly active minutes.</value>
         public TimeSpan AverageActiveMinutes => TimeSpan.FromMinutes(this.Entries.Average(entry => entry.ActiveMinutes.Minutes));
+        
         /// <summary>
         ///     Gets the maximum steps.
         /// </summary>
@@ -57,18 +58,17 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         public DateTime FirstEntryDate => this.getAllEntriesOrderedByDate()[0].Date;
 
         /// <summary>
-        ///     Gets the last entry date.
-        /// </summary>
-        /// <value>
-        ///     The last entry date.
-        /// </value>
-
-        /// <summary>
         /// Finds the entry with most active minutes.
         /// </summary>
         /// <value>Entry with most active minutes for the year</value>
         public FitbitEntry MostActiveMinutes => this.Entries.Find(matchingEntry => matchingEntry.ActiveMinutes == this.Entries.Max(entry => entry.ActiveMinutes));
 
+        /// <summary>
+        /// Gets the last entry date.
+        /// </summary>
+        /// <value>
+        /// The last entry date.
+        /// </value>
         public DateTime LastEntryDate => this.getAllEntriesOrderedByDate()[this.Entries.Count - 1].Date;
 
         /// <summary>
