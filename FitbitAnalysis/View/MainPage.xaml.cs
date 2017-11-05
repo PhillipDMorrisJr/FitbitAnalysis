@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 using FitbitAnalysis_Phillip_Morris.Report;
+using FitbitAnalysis_Phillip_Morris.View.ContentDialogs;
 
 namespace FitbitAnalysis_Phillip_Morris.View
 {
@@ -31,8 +32,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// </summary>
         public const int ApplicationWidth = 1200;
 
-        private static List<DateTime> duplicatedDatesNotToAdd;
-        private static List<FitbitEntry> entriesToReplace;
+        private List<DateTime> duplicatedDatesNotToAdd;
+        private List<FitbitEntry> entriesToReplace;
         private readonly FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
         private bool replaceAll;
@@ -68,8 +69,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private async void loadButton_Click(object sender, RoutedEventArgs e)
         {
             this.skipAll = false;
-            entriesToReplace = new List<FitbitEntry>();
-            duplicatedDatesNotToAdd = new List<DateTime>();
+            this.entriesToReplace = new List<FitbitEntry>();
+            this.duplicatedDatesNotToAdd = new List<DateTime>();
 
             var file = await pickFile();
             if (!this.fitbitJournal.IsEmpty())
@@ -146,7 +147,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void replaceEntries()
         {
-            foreach (var fitbitEntry in entriesToReplace)
+            foreach (var fitbitEntry in this.entriesToReplace)
             {
                 this.fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
             }
@@ -181,7 +182,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
             using (var reader = new StreamReader(stream))
             {
-                reader.ReadLine();
                 while (!reader.EndOfStream)
                 {
                     var line = reader.ReadLine();
@@ -191,13 +191,26 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     var caloriesBurned = int.Parse(input[1]);
                     var steps = int.Parse(input[2]);
                     var distance = double.Parse(input[3]);
-                    var activityCalories = int.Parse(input[5]);
                     var floors = int.Parse(input[4]);
+                    var activityCalories = int.Parse(input[5]);
+                    var activeMinutes = parseActiveMinutes(input);
                     var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
-                        floors);
+                        floors, activeMinutes);
                     await this.manageAndAddFitbitEntry(fitbitEntry, date);
                 }
             }
+        }
+
+        private static TimeSpan parseActiveMinutes(string[] input)
+        {
+            var timeLine = input[6];
+            char[] separator = {':'};
+            var time = timeLine.Split(separator);
+            var hour = int.Parse(time[1]);
+            var minute = int.Parse(time[2]);
+
+            var activeMinutes = new TimeSpan(hour, minute, 0);
+            return activeMinutes;
         }
 
         private async Task manageAndAddFitbitEntry(FitbitEntry fitbitEntry, DateTime date)
@@ -206,10 +219,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             {
                 this.fitbitJournal.AddEntry(fitbitEntry);
             }
-            else if (this.skipAll)
-            {
-            }
-            else
+            else if (!this.skipAll)
             {
                 await this.handleWhenFitbitContainsDate(date, fitbitEntry);
             }
@@ -230,7 +240,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void handleWhenReplacing(FitbitEntry fitbitEntry)
         {
-            if (entriesToReplace.Contains(fitbitEntry))
+            if (this.entriesToReplace.Contains(fitbitEntry))
             {
                 this.fitbitJournal.ReplaceMatchingDateEntries(fitbitEntry);
             }
@@ -238,7 +248,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private void addToFitbitCollection(FitbitEntry fitbitEntry)
         {
-            if (!duplicatedDatesNotToAdd.Contains(fitbitEntry.Date))
+            if (!this.duplicatedDatesNotToAdd.Contains(fitbitEntry.Date))
             {
                 this.fitbitJournal.AddEntry(fitbitEntry);
             }
@@ -254,7 +264,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 case DuplicateEntryFoundDialog.MyResult.Skip:
                     break;
                 case DuplicateEntryFoundDialog.MyResult.Replace:
-                    entriesToReplace.Add(fitbitEntry);
+                    this.entriesToReplace.Add(fitbitEntry);
                     break;
                 case DuplicateEntryFoundDialog.MyResult.SkipAll:
                     this.skipAll = true;
@@ -291,7 +301,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private string getFitbitFileOutput()
         {
-            var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories" + Environment.NewLine;
+            var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories,Active Minutes" +
+                                   Environment.NewLine;
             foreach (var entry in this.fitbitJournal.Entries)
             {
                 fitbitFileOutput = getFitbitEntryOutput(fitbitFileOutput, entry);
@@ -307,6 +318,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             fitbitFileOutput += entry.Steps + ",";
             fitbitFileOutput += entry.Distance + ",";
             fitbitFileOutput += entry.Floors + ",";
+            fitbitFileOutput += entry.ActiveMinutes + ",";
             fitbitFileOutput += entry.ActivityCalories + Environment.NewLine;
             return fitbitFileOutput;
         }
@@ -322,29 +334,39 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 {
                     if (!entryDialog.IsGoodFormat)
                     {
-                        var formatDialog = new ContentDialog {
-                            Content = "The distance must be positive and the steps, calories and floors must be positive integers. The entry's date can not come before the current date.",
-                            CloseButtonText = "Okay"
-                        };
-                        await formatDialog.ShowAsync();
+                        await informEntryIsBadFormat();
                     }
                     else
                     {
-                        var entryNotAddeddialog = new ContentDialog {
-                            Content = "Entry not added",
-                            CloseButtonText = "Okay"
-                        };
-                        await entryNotAddeddialog.ShowAsync();
+                        await informEntryNotAdded();
                     }
                     return;
                 }
-
                 await this.manageAndAddFitbitEntry(entry, entry.Date);
                 this.updateButton_OnClickButton_Click(sender, e);
             }
             catch (FormatException)
             {
             }
+        }
+
+        private static async Task informEntryNotAdded()
+        {
+            var entryNotAddeddialog = new ContentDialog {
+                Content = "Entry not added",
+                CloseButtonText = "Okay"
+            };
+            await entryNotAddeddialog.ShowAsync();
+        }
+
+        private static async Task informEntryIsBadFormat()
+        {
+            var formatDialog = new ContentDialog {
+                Content =
+                    "The distance must be positive and the steps, calories and floors must be positive integers. The entry's date can not come before the current date.",
+                CloseButtonText = "Okay"
+            };
+            await formatDialog.ShowAsync();
         }
 
         #endregion

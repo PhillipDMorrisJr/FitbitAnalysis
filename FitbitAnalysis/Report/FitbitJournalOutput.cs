@@ -23,7 +23,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FitbitJournalOutput"/> class.
+        ///     Initializes a new instance of the <see cref="FitbitJournalOutput" /> class.
         /// </summary>
         /// <param name="fitbitJournal">The fitbit journal.</param>
         public FitbitJournalOutput(FitbitJournal fitbitJournal)
@@ -34,6 +34,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         #endregion
 
         #region Methods
+
         /// <summary>
         ///     Gets the output.
         /// </summary>
@@ -82,7 +83,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
             {
                 if (index == 0)
                 {
-                    this.addDaysWithStepBetweenBoundariesStatements(lowerBound-1, upperBound);
+                    this.addDaysWithStepBetweenBoundariesStatements(lowerBound - 1, upperBound);
                 }
                 else if (index == this.currentAmountOfCategories - 1)
                 {
@@ -104,7 +105,8 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         /// <param name="currentFitbitJournal"></param>
         private void addLastBoundaryStatement(int lastBoundary, FitbitJournal currentFitbitJournal)
         {
-            var boundarySix = "Days with " + lastBoundary.ToString("N0") + " or more: " + currentFitbitJournal.CountDaysWithStepsOver(lastBoundary).ToString("N0");
+            var boundarySix = "Days with " + lastBoundary.ToString(NUMBERFORMAT) + " or more: " + currentFitbitJournal
+                                  .CountDaysWithStepsOver(lastBoundary).ToString(NUMBERFORMAT);
             this.outputStatements.Add(boundarySix);
         }
 
@@ -117,7 +119,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
             var output = "";
             foreach (var statement in this.outputStatements)
             {
-                output += statement + Environment.NewLine ;
+                output += statement + Environment.NewLine;
             }
             return output;
         }
@@ -127,9 +129,10 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         /// </summary>
         private void addStepStatements(FitbitJournal currentFitbitJournal)
         {
-            var daysWithOverTenThousandSteps = "The number of days with more than " + this.currentThreshold + " steps: " +
-                                               this.fitbitJournal.CountDaysWithStepsOver(this.currentThreshold).ToString("N0");
-            
+            var daysWithOverTenThousandSteps =
+                "The number of days with more than " + this.currentThreshold + " steps: " +
+                this.fitbitJournal.CountDaysWithStepsOver(this.currentThreshold).ToString(NUMBERFORMAT);
+
             this.addMaxAndMinStepStatements(currentFitbitJournal.MaxSteps, currentFitbitJournal.MinSteps);
             this.averageStepsTakenStatement(currentFitbitJournal);
             this.outputStatements.Add(daysWithOverTenThousandSteps);
@@ -159,7 +162,7 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         /// <param name="minSteps">The minimum steps.</param>
         private void addLeastStepsStatement(int minSteps)
         {
-            var fewestStepsTaken = "The fewest steps taken all year: " + minSteps.ToString("N0") + " on " +
+            var fewestStepsTaken = "The fewest steps taken all year: " + minSteps.ToString(NUMBERFORMAT) + " on " +
                                    this.fitbitJournal.FindDateBasedOnSteps(minSteps).GetDateTimeFormats()[0];
             this.outputStatements.Add(fewestStepsTaken);
         }
@@ -170,16 +173,18 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         /// <param name="maxSteps">The maximum steps.</param>
         private void addMostStepsStatement(int maxSteps)
         {
-            var mostStepsTaken = "The most steps taken all year: " + maxSteps.ToString("N0") + " on " +
+            var mostStepsTaken = "The most steps taken all year: " + maxSteps.ToString(NUMBERFORMAT) + " on " +
                                  this.fitbitJournal.FindDateBasedOnSteps(maxSteps).GetDateTimeFormats()[0];
             this.outputStatements.Add(mostStepsTaken);
         }
 
         private void addDaysWithStepBetweenBoundariesStatements(int lowerBoundary, int upperBoundary)
         {
-            var daysWithStepsBetween = "Days with Steps between " + lowerBoundary.ToString("N0") + " and " + upperBoundary.ToString("N0") +
+            var daysWithStepsBetween = "Days with Steps between " + lowerBoundary.ToString(NUMBERFORMAT) + " and " +
+                                       upperBoundary.ToString(NUMBERFORMAT) +
                                        " steps: " +
-                                       this.fitbitJournal.CountDaysWithStepsBetween(lowerBoundary, upperBoundary).ToString("N0");
+                                       this.fitbitJournal.CountDaysWithStepsBetween(lowerBoundary, upperBoundary)
+                                           .ToString(NUMBERFORMAT);
 
             this.outputStatements.Add(daysWithStepsBetween);
         }
@@ -206,7 +211,16 @@ namespace FitbitAnalysis_Phillip_Morris.Report
             var yearlyJournal = this.fitbitJournal.GetEntriesByYear(year);
             this.addStepStatements(yearlyJournal);
             this.addBoundaryStatements(yearlyJournal);
+            this.addAverageActiveMinutesStatements(yearlyJournal);
+        }
 
+        private void addAverageActiveMinutesStatements(FitbitJournal yearlyJournal)
+        {
+            var entry = yearlyJournal.MostActiveMinutes;
+            var mostActiveMinutesStatement = "Most Active minutes: " +
+                                             entry.ActiveMinutes.ToString(TIMESPANFORMAT) + " occurred on " +
+                                             entry.Date.GetDateTimeFormats()[0];
+            this.outputStatements.Add(mostActiveMinutesStatement);
         }
 
         private void generateMonthlyBreakDown(int year, string[] months, FitbitJournal monthlyFitbitJournal)
@@ -216,12 +230,20 @@ namespace FitbitAnalysis_Phillip_Morris.Report
                 var monthCollection = this.fitbitJournal.GetEntriesOrderedDatesByMonthAndYear(month, year);
 
                 this.addMonthlyEntryData(monthlyFitbitJournal, monthCollection);
-
+                String averageActiveMinutesStatement = "";
+                if (monthCollection.Count > 0)
+                {
+                    var average = monthlyFitbitJournal.AverageActiveMinutes;
+                    averageActiveMinutesStatement = "Average Active minutes: " + average.ToString(TIMESPANFORMAT);
+                }
+                
                 this.outputStatements.Add(Environment.NewLine);
                 this.outputStatements.Add(months[month - 1] + " " + year + " (" +
                                           this.fitbitJournal.CountPerMonthAndYear(month, year) + " days of data)" +
                                           ": ");
                 this.addMonthlyStatisticsStatements(monthlyFitbitJournal);
+
+                this.outputStatements.Add(averageActiveMinutesStatement);
             }
         }
 
@@ -247,7 +269,12 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         }
 
         #endregion
+
+        #region CONSTANTS
+
+        public const string NUMBERFORMAT = "N0";
+        public const string TIMESPANFORMAT = @"hh\:mm";
+
+        #endregion
     }
-
-
 }

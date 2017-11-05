@@ -56,7 +56,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// </value>
         public int ActivityCalories { get; }
 
-        public TimeSpan Time {get;}
+        public TimeSpan ActiveMinutes { get;}
 
         #endregion
 
@@ -69,7 +69,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <param name="caloriesBurned">The calories burned.</param>
         /// <param name="floors">The floors.</param>
         /// <param name="activityCalories">The activity calories.</param>
-        /// <param name="time">The time.</param>
+        /// <param name="minutes">The minutes.</param>
         /// <exception cref="ArgumentException">Date can not be  null or occur after the current date
         /// or
         /// Steps musts be positive
@@ -82,11 +82,11 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// or 
         /// activityCaloriesTracker musts be positive</exception>
         public FitbitEntry(DateTime date, int steps, double distance, int caloriesBurned, int floors,
-            int activityCalories, TimeSpan time)
+            int activityCalories, TimeSpan minutes)
         {
             if (date == null)
                 throw new ArgumentException("Date can not be null");
-            if (time == null)
+            if (minutes == null)
                 throw new ArgumentException("Time can not be null");
             if (date > DateTime.Now)
                 throw new ArgumentException("Date can not be after today");
@@ -108,7 +108,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.CaloriesBurned = caloriesBurned;
             this.Floors = floors;
             this.ActivityCalories = activityCalories;
-            this.Time = time;
+            this.ActiveMinutes = minutes;
         }
 
         

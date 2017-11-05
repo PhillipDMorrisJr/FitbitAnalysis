@@ -20,6 +20,11 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         public int MinSteps => this.Entries.Min(entry => entry.Steps);
 
         /// <summary>
+        /// Averages active minutes.
+        /// </summary>
+        /// <value>Timmespan the of average of monthly active minutes.</value>
+        public TimeSpan AverageActiveMinutes => TimeSpan.FromMinutes(this.Entries.Average(entry => entry.ActiveMinutes.Minutes));
+        /// <summary>
         ///     Gets the maximum steps.
         /// </summary>
         /// <value>
@@ -57,6 +62,13 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The last entry date.
         /// </value>
+
+        /// <summary>
+        /// Finds the entry with most active minutes.
+        /// </summary>
+        /// <value>Entry with most active minutes for the year</value>
+        public FitbitEntry MostActiveMinutes => this.Entries.Find(matchingEntry => matchingEntry.ActiveMinutes == this.Entries.Max(entry => entry.ActiveMinutes));
+
         public DateTime LastEntryDate => this.getAllEntriesOrderedByDate()[this.Entries.Count - 1].Date;
 
         /// <summary>
@@ -228,6 +240,9 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <summary>
         ///     Replaces the matching date entries.
         /// </summary>
+        /// <postcondition>
+        /// Removes all entries with the matching date of the entry passed in
+        /// </postcondition>
         /// <param name="fitbitEntry">The fitbit entry.</param>
         public void ReplaceMatchingDateEntries(FitbitEntry fitbitEntry)
         {
@@ -243,10 +258,22 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <returns></returns>
         public int CountPerMonthAndYear(int month, int year)
         {
-            var entries = this.Entries.FindAll(entry => entry.Date.Month == month && entry.Date.Year == year);
+            var entries = this.findEntriesMatchingDate(month, year);
             return entries.Count;
         }
 
+        /// <summary>
+        /// Finds the entries matching date.
+        /// </summary>
+        /// <param name="month">The month.</param>
+        /// <param name="year">The year.</param>
+        /// <returns></returns>
+        private List<FitbitEntry> findEntriesMatchingDate(int month, int year)
+        {
+            return this.Entries.FindAll(entry => entry.Date.Month == month && entry.Date.Year == year);
+        }
+
+       
         #endregion
     }
 }
