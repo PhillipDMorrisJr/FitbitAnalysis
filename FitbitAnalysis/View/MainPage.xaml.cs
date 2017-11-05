@@ -82,7 +82,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 this.replaceAll = loadDialog.Replace;
                 if (loadDialog.Cancel)
                 {
-                    return;
+                    return; 
                 }
                 if (this.replaceAll)
                 {
