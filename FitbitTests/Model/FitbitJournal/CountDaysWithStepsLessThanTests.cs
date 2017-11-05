@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FitbitAnalysis_Phillip_Morris.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -26,7 +22,7 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenOnlyOneInJournalAndMatches()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
 
@@ -37,9 +33,9 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultiplesInJournalAndNoneMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(DateTime.Today, 2000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(DateTime.Today, 3000, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(DateTime.Today, 2000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(DateTime.Today, 3000, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
@@ -52,9 +48,9 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleInJournalAndOneMatches()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
@@ -67,10 +63,10 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleInJournalAndMultipleMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155);
-            var testEntry4 = new FitbitEntry(DateTime.Today, 800, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry4 = new FitbitEntry(DateTime.Today, 800, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
@@ -84,10 +80,10 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleInJournalAndAllMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155);
-            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155);
-            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155);
-            var testEntry4 = new FitbitEntry(DateTime.Today, 800, 2.0, 310, 1, 155);
+            var testEntry = new FitbitEntry(DateTime.Today, 500, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry2 = new FitbitEntry(DateTime.Today, 1000, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry3 = new FitbitEntry(DateTime.Today, 1200, 2.0, 310, 1, 155, new TimeSpan());
+            var testEntry4 = new FitbitEntry(DateTime.Today, 800, 2.0, 310, 1, 155, new TimeSpan());
 
             testJournal.AddEntry(testEntry);
             testJournal.AddEntry(testEntry2);
