@@ -40,7 +40,7 @@ namespace FitbitAnalysis_Phillip_Morris.View.ContentDialogs
                 var entryCaloriesBurned = int.Parse(this.caloriesBurned.Text);
                 var entryFloors = int.Parse(this.floors.Text);
                 var entryActivityCalories = int.Parse(this.activityCalories.Text);
-                var entryActiveMinutes = TimeSpan.Parse(this.activityCalories.Text);
+                var entryActiveMinutes = MinuteConverter.ConvertMinutesToTimeSpan(int.Parse(this.activeMinutes.Text));
 
                 var fitbitEntry = new FitbitEntry(entryDate, entrySteps, entryDistance, entryCaloriesBurned,
                     entryFloors, entryActivityCalories, entryActiveMinutes);

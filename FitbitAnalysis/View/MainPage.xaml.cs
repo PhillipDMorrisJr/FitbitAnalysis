@@ -179,37 +179,44 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             char[] seperator = {','};
             var stream = await file.OpenStreamForReadAsync();
-
-            using (var reader = new StreamReader(stream))
+            try
             {
-                while (!reader.EndOfStream)
+                using (var reader = new StreamReader(stream))
                 {
-                    var line = reader.ReadLine();
-                    var input = line.Split(seperator);
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var input = line.Split(seperator);
 
-                    var date = DateTime.Parse(input[0]);
-                    var caloriesBurned = int.Parse(input[1]);
-                    var steps = int.Parse(input[2]);
-                    var distance = double.Parse(input[3]);
-                    var floors = int.Parse(input[4]);
-                    var activityCalories = int.Parse(input[5]);
-                    var activeMinutes = parseActiveMinutes(input);
-                    var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
-                        floors, activeMinutes);
-                    await this.manageAndAddFitbitEntry(fitbitEntry, date);
+                        var date = DateTime.Parse(input[0]);
+                        var caloriesBurned = int.Parse(input[1]);
+                        var steps = int.Parse(input[2]);
+                        var distance = double.Parse(input[3]);
+                        var floors = int.Parse(input[4]);
+                        var activityCalories = int.Parse(input[5]);
+                        var activeMinutes = parseActiveMinutes(input);
+                        var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
+                            floors, activeMinutes);
+                        await this.manageAndAddFitbitEntry(fitbitEntry, date);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                ContentDialog tellAboutTroubles = new ContentDialog {
+                    Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
+                    CloseButtonText = "Great"
+                };
+                await tellAboutTroubles.ShowAsync();
             }
         }
 
         private static TimeSpan parseActiveMinutes(string[] input)
         {
             var timeLine = input[6];
-            char[] separator = {':'};
-            var time = timeLine.Split(separator);
-            var hour = int.Parse(time[1]);
-            var minute = int.Parse(time[2]);
+            var timeInMinutes = int.Parse(timeLine);
 
-            var activeMinutes = new TimeSpan(hour, minute, 0);
+            var activeMinutes = MinuteConverter.ConvertMinutesToTimeSpan(timeInMinutes);
             return activeMinutes;
         }
 
@@ -363,7 +370,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
         {
             var formatDialog = new ContentDialog {
                 Content =
-                    "The distance must be positive and the steps, calories and floors must be positive integers. The entry's date can not come before the current date.",
+                    "The distance must be positive and the steps, calories, active minutes and floors must be positive integers. The entry's date can not come before the current date.",
                 CloseButtonText = "Okay"
             };
             await formatDialog.ShowAsync();

@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\MinuteConverter.cs" />
     <Compile Include="View\ContentDialogs\AddEntryDialog.xaml.cs">
       <DependentUpon>AddEntryDialog.xaml</DependentUpon>
     </Compile>
