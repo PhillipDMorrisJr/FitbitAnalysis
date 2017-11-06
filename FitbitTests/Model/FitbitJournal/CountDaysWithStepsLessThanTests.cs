@@ -5,19 +5,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the CountDaysWithLessStepsThan method of the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// No entries in journal.
-    /// 1 entry in journal and matches.
-    /// Multiple entries in journal and none match criteria.
-    /// Multiple entries in journal and 1 matches criteria.
-    /// Multiple entries in journal and multiple match criteria.
-    /// Multiple entries in journal and all match criteria.
+    ///     Tests the CountDaysWithLessStepsThan method of the FitbitJournal class.
+    ///     Tests:
+    ///     No entries in journal.
+    ///     1 entry in journal and matches.
+    ///     Multiple entries in journal and none match criteria.
+    ///     Multiple entries in journal and 1 matches criteria.
+    ///     Multiple entries in journal and multiple match criteria.
+    ///     Multiple entries in journal and all match criteria.
     /// </summary>
     [TestClass]
     public class CountDaysWithStepsLessThanTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenNoEntriesInJournal()
         {
@@ -100,5 +101,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(4, testJournal.CountDaysWithStepsLessThan(1500));
         }
+
+        #endregion
     }
 }

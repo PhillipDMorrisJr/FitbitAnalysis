@@ -5,17 +5,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the ContainsDateTests method of the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// Does not contain date from single entry.
-    /// Does contain date from single entry.
-    /// Does contain date from multiple entries.
-    /// Does not contain date from multiple entries.
+    ///     Tests the ContainsDateTests method of the FitbitJournal class.
+    ///     Tests:
+    ///     Does not contain date from single entry.
+    ///     Does contain date from single entry.
+    ///     Does contain date from multiple entries.
+    ///     Does not contain date from multiple entries.
     /// </summary>
     [TestClass]
     public class ContainsDateTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenDoesNotContainDate()
         {
@@ -77,5 +78,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(false, testJournal.ContainsDate(otherDate));
         }
+
+        #endregion
     }
 }

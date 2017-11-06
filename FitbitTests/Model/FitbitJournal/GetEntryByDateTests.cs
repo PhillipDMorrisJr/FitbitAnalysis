@@ -5,16 +5,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the GetEntryByDate metho of the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// 1 entry in journal matches.
-    /// 1 entry from multiple in journal matches.
-    /// Date matches properly.
+    ///     Tests the GetEntryByDate metho of the FitbitJournal class.
+    ///     Tests:
+    ///     1 entry in journal matches.
+    ///     1 entry from multiple in journal matches.
+    ///     Date matches properly.
     /// </summary>
     [TestClass]
     public class GetEntryByDateTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenEntryInJournalMatches()
         {
@@ -56,5 +57,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(testDate2, testJournal.GetEntryByDate(testDate2).Date);
         }
+
+        #endregion
     }
 }

@@ -5,19 +5,20 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the GetEntriesByYear method of the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// When no entries are in the journal.
-    /// When none match from multiple in journal.
-    /// 1 matches from multiple in journal.
-    /// Multiple match from multiple in jounrnal.
-    /// All entries match.
-    /// Check proper year is found.
+    ///     Tests the GetEntriesByYear method of the FitbitJournal class.
+    ///     Tests:
+    ///     When no entries are in the journal.
+    ///     When none match from multiple in journal.
+    ///     1 matches from multiple in journal.
+    ///     Multiple match from multiple in jounrnal.
+    ///     All entries match.
+    ///     Check proper year is found.
     /// </summary>
     [TestClass]
     public class GetEntriesByYearTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenNoEntriesInJournal()
         {
@@ -127,5 +128,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(2016, resultJournal.Entries[0].Date.Year);
         }
+
+        #endregion
     }
 }

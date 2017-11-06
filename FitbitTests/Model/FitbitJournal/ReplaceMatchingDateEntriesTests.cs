@@ -5,14 +5,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the ReplaceMatchingDateEntries method in the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// Replacing with different steps.
-    /// Replacing with different distance.
-    /// Replacing with different calories.
-    /// Replacing with different floors.
-    /// Replacing with different activity calories.
+    ///     Tests the ReplaceMatchingDateEntries method in the FitbitJournal class.
+    ///     Tests:
+    ///     Replacing with different steps.
+    ///     Replacing with different distance.
+    ///     Replacing with different calories.
+    ///     Replacing with different floors.
+    ///     Replacing with different activity calories.
     /// </summary>
     [TestClass]
     public class ReplaceMatchingDateEntriesTests

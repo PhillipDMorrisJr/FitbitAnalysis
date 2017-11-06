@@ -5,17 +5,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the CountPerMonthAndYearTests method in the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// No entries in Journal.
-    /// Only 1 entry in Jounal.
-    /// Multiple entries in Journal and none match criteria.
-    /// Multiple entries in Journal and 1 match criteria.
+    ///     Tests the CountPerMonthAndYearTests method in the FitbitJournal class.
+    ///     Tests:
+    ///     No entries in Journal.
+    ///     Only 1 entry in Jounal.
+    ///     Multiple entries in Journal and none match criteria.
+    ///     Multiple entries in Journal and 1 match criteria.
     /// </summary>
     [TestClass]
     public class CountPerMonthAndYearTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenNoEntriesInJournalShouldBe0()
         {
@@ -39,9 +40,9 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleSameYearAndMonthInJournalAndNoneMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            DateTime testDate1 = new DateTime(2017, 11, 1);
-            DateTime testDate2 = new DateTime(2017, 11, 2);
-            DateTime testDate3 = new DateTime(2017, 11, 3);
+            var testDate1 = new DateTime(2017, 11, 1);
+            var testDate2 = new DateTime(2017, 11, 2);
+            var testDate3 = new DateTime(2017, 11, 3);
 
             var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155, new TimeSpan());
             var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155, new TimeSpan());
@@ -58,9 +59,9 @@ namespace FitbitTests.Model.FitbitJournal
         public void WhenMultipleDifferentYearAndMonthInJournalAndOneMatch()
         {
             var testJournal = new FitbitAnalysis_Phillip_Morris.Model.FitbitJournal();
-            DateTime testDate1 = new DateTime(2015, 9, 2);
-            DateTime testDate2 = new DateTime(2016, 10, 5);
-            DateTime testDate3 = new DateTime(2017, 11, 3);
+            var testDate1 = new DateTime(2015, 9, 2);
+            var testDate2 = new DateTime(2016, 10, 5);
+            var testDate3 = new DateTime(2017, 11, 3);
 
             var testEntry = new FitbitEntry(testDate1, 1000, 2.0, 310, 1, 155, new TimeSpan());
             var testEntry2 = new FitbitEntry(testDate2, 2000, 2.0, 310, 1, 155, new TimeSpan());
@@ -72,5 +73,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(1, testJournal.CountPerMonthAndYear(10, 2016));
         }
+
+        #endregion
     }
 }

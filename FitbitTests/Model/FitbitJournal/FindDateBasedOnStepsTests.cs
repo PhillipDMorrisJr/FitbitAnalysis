@@ -5,12 +5,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// 1 entry in journal matches.
-    /// 1 entry from multiple in journal matches.
+    ///     1 entry in journal matches.
+    ///     1 entry from multiple in journal matches.
     /// </summary>
     [TestClass]
     public class FindDateBasedOnStepsTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenEntryInJournalMatches()
         {
@@ -40,5 +42,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(testDate2, testJournal.FindDateBasedOnSteps(2000));
         }
+
+        #endregion
     }
 }

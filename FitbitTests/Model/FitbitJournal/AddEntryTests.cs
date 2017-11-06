@@ -5,17 +5,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the AddEntry method of the FitbitJournal class.
-    /// 
-    /// Tests:
-    /// No entries added to journal.
-    /// 1 entry in journal added.
-    /// Multiple entries added to journal.
-    /// Adding null entry throws NullArgumentException.
+    ///     Tests the AddEntry method of the FitbitJournal class.
+    ///     Tests:
+    ///     No entries added to journal.
+    ///     1 entry in journal added.
+    ///     Multiple entries added to journal.
+    ///     Adding null entry throws NullArgumentException.
     /// </summary>
     [TestClass]
     public class AddEntryTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenAddNoneCountShouldBe0()
         {
@@ -60,5 +61,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             testJournal.AddEntry(null);
         }
+
+        #endregion
     }
 }
