@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FitbitAnalysis_Phillip_Morris.Model
+namespace FitbitAnalysis_Phillip_Morris.Utility
 {
     public static class MinuteConverter
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 using FitbitAnalysis_Phillip_Morris.Model;
+using FitbitAnalysis_Phillip_Morris.Utility;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 

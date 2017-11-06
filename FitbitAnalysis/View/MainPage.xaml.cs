@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 using FitbitAnalysis_Phillip_Morris.Report;
+using FitbitAnalysis_Phillip_Morris.Utility;
 using FitbitAnalysis_Phillip_Morris.View.ContentDialogs;
 
 namespace FitbitAnalysis_Phillip_Morris.View
