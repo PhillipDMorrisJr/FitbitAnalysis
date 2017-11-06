@@ -129,7 +129,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 var binSizeResult = this.parseTextBoxTextToInteger(out binSizeParsed, this.binSize);
 
                 await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed, binSizeParsed);
-
+                 
                 this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
                 this.outputTextBox.Text =
                     this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
