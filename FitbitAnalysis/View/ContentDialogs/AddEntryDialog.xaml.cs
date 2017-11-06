@@ -1,6 +1,5 @@
 ﻿using System;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -13,7 +12,7 @@ namespace FitbitAnalysis_Phillip_Morris.View.ContentDialogs
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
-    public sealed partial class AddEntryDialog : ContentDialog
+    public sealed partial class AddEntryDialog
     {
         #region Constructors
 

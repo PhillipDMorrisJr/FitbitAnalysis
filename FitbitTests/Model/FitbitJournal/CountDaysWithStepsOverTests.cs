@@ -5,11 +5,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FitbitTests.Model.FitbitJournal
 {
     /// <summary>
-    /// Tests the CountDaysWithStepsOver method in the FitbitJournal class.
+    ///     Tests the CountDaysWithStepsOver method in the FitbitJournal class.
+    ///     Tests:
+    ///     No entries in journal.
+    ///     1 entry in journal and matches.
+    ///     Multiple entries in journal and none match criteria.
+    ///     Multiple entries in journal and 1 matches criteria.
+    ///     Multiple entries in journal and multiple match criteria.
     /// </summary>
     [TestClass]
     public class CountDaysWithStepsOverTests
     {
+        #region Methods
+
         [TestMethod]
         public void WhenNoEntriesInJournal()
         {
@@ -75,5 +83,7 @@ namespace FitbitTests.Model.FitbitJournal
 
             Assert.AreEqual(2, testJournal.CountDaysWithStepsOver(900));
         }
+
+        #endregion
     }
 }

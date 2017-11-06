@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="loadDialog"
-    Title="Attention" Height="672" Width="516">
+    Title="Attention" Height="241.6" Width="402">
 
     <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True" Margin="0,0,0,100">
         <TextBlock Text="Would you like to merge this file?" Margin="0,5,51,10" HorizontalAlignment="Right" Width="289" />

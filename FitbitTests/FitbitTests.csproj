@@ -96,10 +96,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\FitbitJournal\AddEntryTests.cs" />
+    <Compile Include="Model\FitbitJournal\ContainsDateTests.cs" />
     <Compile Include="Model\FitbitJournal\CountDaysWithStepsBetweenTests.cs" />
     <Compile Include="Model\FitbitJournal\CountDaysWithStepsLessThanTests.cs" />
     <Compile Include="Model\FitbitJournal\CountDaysWithStepsOverTests.cs" />
     <Compile Include="Model\FitbitJournal\CountPerMonthAndYearTests.cs" />
+    <Compile Include="Model\FitbitJournal\FindDateBasedOnStepsTests.cs" />
+    <Compile Include="Model\FitbitJournal\GetEntriesByYearTests.cs" />
+    <Compile Include="Model\FitbitJournal\GetEntryByDateTests.cs" />
     <Compile Include="Model\FitbitJournal\ReplaceMatchingDateEntriesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestApp.xaml.cs">
