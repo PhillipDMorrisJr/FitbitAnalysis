@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq.Expressions;
+using System.Xml.Serialization;
+
 namespace FitbitAnalysis_Phillip_Morris.Model
 {
     /// <summary>
     /// </summary>
-    public class FitbitEntry
+    public class FitbitEntry 
     {
 
         #region Properties
@@ -14,7 +17,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The date.
         /// </value>
-        public DateTime Date { get; }
+        public DateTime Date { get; set;  }
 
         /// <summary>
         /// Gets the steps.
@@ -22,7 +25,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The steps.
         /// </value>
-        public int Steps { get; }
+        public int Steps { get; set; }
 
         /// <summary>
         /// Gets the distance.
@@ -30,7 +33,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The distance.
         /// </value>
-        public double Distance { get; }
+        public double Distance { get; set; }
 
         /// <summary>
         /// Gets the calories burned.
@@ -38,7 +41,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The calories burned.
         /// </value>
-        public int CaloriesBurned { get; }
+        public int CaloriesBurned { get; set; }
 
         /// <summary>
         /// Gets the floors.
@@ -46,7 +49,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The floors.
         /// </value>
-        public int Floors { get; }
+        public int Floors { get; set; }
 
         /// <summary>
         /// Gets the activity calories.
@@ -54,9 +57,15 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         /// The activity calories.
         /// </value>
-        public int ActivityCalories { get; }
+        public int ActivityCalories { get; set; }
 
-        public TimeSpan ActiveMinutes { get;}
+        /// <summary>
+        /// Gets the active minutes.
+        /// </summary>
+        /// <value>
+        /// The active minutes.
+        /// </value>
+        public TimeSpan ActiveMinutes { get; set; }
 
         #endregion
 
@@ -100,7 +109,6 @@ namespace FitbitAnalysis_Phillip_Morris.Model
                 throw new ArgumentException("Floors musts be positive");
             if (activityCalories < 0)
                 throw new ArgumentException("Activity Calories musts be positive");
-            
 
             this.Date = date;
             this.Steps = steps;
@@ -111,6 +119,11 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.ActiveMinutes = minutes;
         }
 
-        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FitbitEntry"/> class.
+        /// </summary>
+        public FitbitEntry() : this(new DateTime(), 0, 0, 0, 0, 0, new TimeSpan())
+        {
+        }
     }
 }

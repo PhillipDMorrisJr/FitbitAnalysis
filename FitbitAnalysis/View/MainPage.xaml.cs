@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using Windows.Foundation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -82,7 +84,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 this.replaceAll = loadDialog.Replace;
                 if (loadDialog.Cancel)
                 {
-                    return; 
+                    return;
                 }
                 if (this.replaceAll)
                 {
@@ -203,7 +205,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             catch (Exception)
             {
-                ContentDialog tellAboutTroubles = new ContentDialog {
+                var tellAboutTroubles = new ContentDialog {
                     Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
                     CloseButtonText = "Great"
                 };
@@ -295,18 +297,40 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            var fitbitFileOutput = this.getFitbitFileOutput();
             var picker = new FileSavePicker();
-
-            picker.FileTypeChoices.Add("file style", new[] {".csv"});
+            picker.FileTypeChoices.Add("file style", new[] {".csv", ".xml"});
             picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
             picker.SuggestedFileName = "fitbitData";
 
             var fitbitSaveFile = await picker.PickSaveFileAsync();
-            await FileIO.WriteTextAsync(fitbitSaveFile, fitbitFileOutput);
+            switch (fitbitSaveFile.FileType)
+            {
+                case ".csv":
+                    var fitbitFileOutput = this.getCsvFitbitFileOutput();
+                    await FileIO.WriteTextAsync(fitbitSaveFile, fitbitFileOutput);
+                    break;
+                case ".xml":
+                    await this.serializeFile(fitbitSaveFile);
+                    break;
+            }
         }
 
-        private string getFitbitFileOutput()
+        private async Task serializeFile(StorageFile fitbitSaveFile)
+        {
+            var serializer = new XmlSerializer(typeof(FitbitEntry));
+            var doc = new XmlDocument();
+            var stream = await fitbitSaveFile.OpenStreamForWriteAsync();
+            
+            using (stream)
+            {
+                serializer.Serialize(stream, this.fitbitJournal.Entries[0]);
+                stream.Position = 0;
+                doc.Load(stream);
+                doc.Save(stream);
+            }
+        }
+
+        private string getCsvFitbitFileOutput()
         {
             var fitbitFileOutput = "Date,Calories Burned,Steps,Distance,Floors,Activity Calories,Active Minutes" +
                                    Environment.NewLine;
