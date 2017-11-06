@@ -5,20 +5,20 @@ namespace FitbitAnalysis_Phillip_Morris.Utility
 {
     public class RelayCommand : ICommand
     {
-        private Action<object> execute;
-        private Predicate<object> canExecute;
+        private readonly Action<object> execute;
+        private readonly Predicate<object> canExecute;
 
         public bool CanExecute(object parameter)
         {
-            bool result = canExecute == null ? true : canExecute(parameter);
+            bool result = this.canExecute?.Invoke(parameter) ?? true;
             return result;
         }
 
         public void Execute(object parameter)
         {
-            if (CanExecute(parameter))
+            if (this.CanExecute(parameter))
             {
-                execute(parameter);
+                this.execute(parameter);
             }
         }
 
@@ -35,7 +35,7 @@ namespace FitbitAnalysis_Phillip_Morris.Utility
         /// </summary>
         public virtual void OnCanExecuteChanged()
         {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
