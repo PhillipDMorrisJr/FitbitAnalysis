@@ -36,7 +36,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private List<DateTime> duplicatedDatesNotToAdd;
         private List<FitbitEntry> entriesToReplace;
-        private readonly FitbitJournal fitbitJournal;
+        private FitbitJournal fitbitJournal;
         private FitbitJournalOutput fitbitFitbitJournalOutput;
         private bool replaceAll;
         private bool mergeAll;
@@ -163,6 +163,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             };
             fileChooser.FileTypeFilter.Add(".csv");
             fileChooser.FileTypeFilter.Add(".txt");
+            fileChooser.FileTypeFilter.Add(".xml");
 
             var file = await fileChooser.PickSingleFileAsync();
             return file;
@@ -180,37 +181,111 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 return;
             }
             char[] seperator = {','};
-            var stream = await file.OpenStreamForReadAsync();
-            try
+            switch (file.FileType)
             {
-                using (var reader = new StreamReader(stream))
-                {
-                    while (!reader.EndOfStream)
+                case ".csv":
+                    
+                    var csvStream = await file.OpenStreamForReadAsync();
+                    try
                     {
-                        var line = reader.ReadLine();
-                        var input = line.Split(seperator);
+                        using (var reader = new StreamReader(csvStream))
+                        {
+                            while (!reader.EndOfStream)
+                            {
 
-                        var date = DateTime.Parse(input[0]);
-                        var caloriesBurned = int.Parse(input[1]);
-                        var steps = int.Parse(input[2]);
-                        var distance = double.Parse(input[3]);
-                        var floors = int.Parse(input[4]);
-                        var activityCalories = int.Parse(input[5]);
-                        var activeMinutes = parseActiveMinutes(input);
-                        var fitbitEntry = new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories,
-                            floors, activeMinutes);
-                        await this.manageAndAddFitbitEntry(fitbitEntry, date);
+                                var line = reader.ReadLine();
+                                var input = line.Split(seperator);
+                                FitbitEntry fitbitEntry = parseCSV(input);
+
+                                await this.manageAndAddFitbitEntry(fitbitEntry, fitbitEntry.Date);
+                            }
+                        }
                     }
-                }
-            }
-            catch (Exception)
+                    catch (Exception)
+                    {
+                        var tellAboutTroubles = new ContentDialog {
+                            Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
+                            CloseButtonText = "Great"
+                        };
+                        await tellAboutTroubles.ShowAsync();
+                    }
+                    break;
+                case ".txt":
+                    var txtStream = await file.OpenStreamForReadAsync();
+                    try
+                    {
+                        using (var reader = new StreamReader(txtStream))
+                        {
+                            while (!reader.EndOfStream)
+                            {
+
+                                var line = reader.ReadLine();
+                                var input = line.Split(seperator);
+                                FitbitEntry fitbitEntry = parseCSV(input);
+
+                                await this.manageAndAddFitbitEntry(fitbitEntry, fitbitEntry.Date);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        var tellAboutTroubles = new ContentDialog
+                        {
+                            Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
+                            CloseButtonText = "Great"
+                        };
+                        await tellAboutTroubles.ShowAsync();
+                    }
+                    break;
+                case ".xml":
+                    try
+                    {
+                        XmlSerializer serializer = new XmlSerializer(typeof(FitbitJournal));
+                        var xmlStream = await file.OpenStreamForReadAsync();
+
+                        using (XmlReader x = XmlReader.Create(xmlStream))
+                        {
+                            
+                            var journal = serializer.Deserialize(x);
+                            
+                            this.fitbitJournal = journal as FitbitJournal;
+                        }
+                    } catch (Exception)
+                    {
+                    }
+                    break;
+                    }
+    }
+
+        /// <summary>
+        /// Parses the CSV.
+        /// Input by index
+        /// 0: DateTime date
+        /// 1: int caloriesBurned
+        /// 2: int steps
+        /// 3: double distance
+        /// 4: int floors
+        /// 5: int activityCalories
+        /// 6: TimeSpan activeMinutes
+        /// </summary>
+        /// <param name="input">The input to be parsed.</param>
+        /// 
+        /// <Exceptions>FormatException, ArgumentException</Exceptions>
+        /// <returns></returns>
+        private static FitbitEntry parseCSV(string[] input)
+        {
+            if (input == null)
             {
-                var tellAboutTroubles = new ContentDialog {
-                    Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
-                    CloseButtonText = "Great"
-                };
-                await tellAboutTroubles.ShowAsync();
+                throw new ArgumentException("input cannot be null");
             }
+            DateTime date = DateTime.Parse(input[0]);
+            int caloriesBurned = int.Parse(input[1]);
+            int steps = int.Parse(input[2]);
+            double distance = double.Parse(input[3]);
+            int floors = int.Parse(input[4]);
+            int activityCalories = int.Parse(input[5]);
+            TimeSpan activeMinutes = parseActiveMinutes(input);
+            return new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories, floors, activeMinutes);
         }
 
         private static TimeSpan parseActiveMinutes(string[] input)
@@ -317,13 +392,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
         private async Task serializeFile(StorageFile fitbitSaveFile)
         {
-            var serializer = new XmlSerializer(typeof(FitbitEntry));
+            var serializer = new XmlSerializer(typeof(FitbitJournal));
             var doc = new XmlDocument();
             var stream = await fitbitSaveFile.OpenStreamForWriteAsync();
             
             using (stream)
             {
-                serializer.Serialize(stream, this.fitbitJournal.Entries[0]);
+                serializer.Serialize(stream, this.fitbitJournal);
                 stream.Position = 0;
                 doc.Load(stream);
                 doc.Save(stream);
