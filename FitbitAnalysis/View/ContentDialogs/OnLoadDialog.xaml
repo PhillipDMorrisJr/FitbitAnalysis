@@ -8,11 +8,16 @@
     x:Name="loadDialog"
     Title="Attention" Height="241.6" Width="402">
 
-    <Grid  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True" Margin="0,0,0,100">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True"
+          Margin="0,0,0,100">
         <TextBlock Text="Would you like to merge this file?" Margin="0,5,51,10" HorizontalAlignment="Right" Width="289" />
-        <Button  Content="Merge" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,108,0,-105" Click="mergeButton_OnClick"/>
-        <Button  Content="Merge All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="78,108,0,-105" Click="mergeAllButton_OnClick"/>
-        <Button  Content="Replace All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="167,108,0,-105" Click="replaceButton_OnClick"/>
-        <Button  Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,108,0,-105" Click="cancelButton_OnClick" Width="72" Height="32"/>
+        <Button Content="Merge" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,108,0,-105"
+                Click="mergeButton_OnClick" />
+        <Button Content="Merge All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="78,108,0,-105"
+                Click="mergeAllButton_OnClick" />
+        <Button Content="Replace All" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="167,108,0,-105"
+                Click="replaceButton_OnClick" />
+        <Button Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="264,108,0,-105"
+                Click="cancelButton_OnClick" Width="72" Height="32" />
     </Grid>
 </ContentDialog>

@@ -8,8 +8,10 @@
     x:Name="dialog"
     Title="Attention" Height="318.2" Width="398.8">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True" Margin="0,0,0,100">
-        <TextBlock x:Name="prompt" Text="Duplicate entry found. What would you like to do?" Margin="0,0,0,15" HorizontalAlignment="Left" Width="350" />
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="350" CanDrag="True"
+          Margin="0,0,0,100">
+        <TextBlock x:Name="prompt" Text="Duplicate entry found. What would you like to do?" Margin="0,0,0,15"
+                   HorizontalAlignment="Left" Width="350" />
         <Button Content="Skip" Click="skipButton_Click" Margin="250,153,0,15" Width="100"
                 RenderTransformOrigin="0.763,1.198" />
         <Button Content="Skip All" Click="skipAllButton_Click" Margin="250,202,0,-34" Width="100" />
@@ -17,6 +19,7 @@
                 RenderTransformOrigin="0.763,1.198" />
         <Button Content="Merge" Click="mergeButton_Click" Margin="127,153,0,15" Width="100"
                 RenderTransformOrigin="0.763,1.198" />
-        <Button Content="Merge All" HorizontalAlignment="Left" Margin="141,202,0,-34" VerticalAlignment="Top" Click="mergeAllButton_Click"/>
+        <Button Content="Merge All" HorizontalAlignment="Left" Margin="141,202,0,-34" VerticalAlignment="Top"
+                Click="mergeAllButton_Click" />
     </Grid>
 </ContentDialog>

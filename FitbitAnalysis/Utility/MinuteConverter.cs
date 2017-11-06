@@ -4,6 +4,8 @@ namespace FitbitAnalysis_Phillip_Morris.Model
 {
     public static class MinuteConverter
     {
+        #region Methods
+
         public static TimeSpan ConvertMinutesToTimeSpan(int minutes)
         {
             if (minutes < 0)
@@ -18,7 +20,6 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             return timeSpan;
         }
 
-
-
+        #endregion
     }
 }

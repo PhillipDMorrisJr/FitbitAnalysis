@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+
 // This User Control item template was found at: https://stackoverflow.com/questions/37738128/custom-content-dialog-in-uwp-with-3-buttons
 
 namespace FitbitAnalysis_Phillip_Morris.View
@@ -14,13 +15,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
         #region Types and Delegates
 
         /// <summary>
-        ///  Result of button selected
+        ///     Result of button selected
         /// </summary>
         public enum MyResult
         {
             Nothing,
             Yes,
-            No,
+            No
         }
 
         #endregion
@@ -28,10 +29,10 @@ namespace FitbitAnalysis_Phillip_Morris.View
         #region Properties
 
         /// <summary>
-        /// Gets or sets the result.
+        ///     Gets or sets the result.
         /// </summary>
         /// <value>
-        /// The result.
+        ///     The result.
         /// </value>
         public MyResult Result { get; set; }
 
