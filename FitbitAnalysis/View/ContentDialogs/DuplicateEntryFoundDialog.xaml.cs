@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
@@ -8,6 +8,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 {
     /// <summary>
     ///     Creates a custom content dialog
+    ///     ****create a merge all button****
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
     public sealed partial class DuplicateEntryFoundDialog
@@ -23,8 +24,35 @@ namespace FitbitAnalysis_Phillip_Morris.View
             Skip,
             SkipAll,
             Replace,
-            Merge
+            Merge,
+            MergeAll
         }
+
+        #endregion
+
+        #region Data members
+
+        /// <summary>
+        ///     The application height
+        /// </summary>
+        public const int ApplicationHeight = 300;
+
+        /// <summary>
+        ///     The application width
+        /// </summary>
+        public const int ApplicationWidth = 300;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets or sets the result.
+        /// </summary>
+        /// <value>
+        ///     The result.
+        /// </value>
+        public MyResult Result { get; set; }
 
         #endregion
 
@@ -40,28 +68,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             this.Result = MyResult.Nothing;
             this.prompt.Text = prompt;
         }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        ///     Gets or sets the result.
-        /// </summary>
-        /// <value>
-        ///     The result.
-        /// </value>
-        public MyResult Result { get; set; }
-
-        /// <summary>
-        ///     The application height
-        /// </summary>
-        public const int ApplicationHeight = 300;
-
-        /// <summary>
-        ///     The application width
-        /// </summary>
-        public const int ApplicationWidth = 300;
 
         #endregion
 
@@ -96,6 +102,12 @@ namespace FitbitAnalysis_Phillip_Morris.View
         private void replaceButton_Click(object sender, RoutedEventArgs e)
         {
             this.Result = MyResult.Replace;
+            this.dialog.Hide();
+        }
+
+        private void mergeAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Result = MyResult.MergeAll;
             this.dialog.Hide();
         }
 

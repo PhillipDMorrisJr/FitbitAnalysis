@@ -205,7 +205,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             {
                 ContentDialog tellAboutTroubles = new ContentDialog {
                     Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
-                    CloseButtonText = "Great"
+                    CloseButtonText = "Ok"
                 };
                 await tellAboutTroubles.ShowAsync();
             }
@@ -298,7 +298,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             var fitbitFileOutput = this.getFitbitFileOutput();
             var picker = new FileSavePicker();
 
-            picker.FileTypeChoices.Add("file style", new[] {".csv"});
+            picker.FileTypeChoices.Add("Comma Separated Value", new[] {".csv"});
             picker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
             picker.SuggestedFileName = "fitbitData";
 
