@@ -96,6 +96,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utility\MinuteConverter.cs" />
+    <Compile Include="Utility\RelayCommand.cs" />
     <Compile Include="View\ContentDialogs\AddEntryDialog.xaml.cs">
       <DependentUpon>AddEntryDialog.xaml</DependentUpon>
     </Compile>
