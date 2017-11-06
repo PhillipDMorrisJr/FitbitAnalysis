@@ -181,14 +181,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 return;
             }
             char[] seperator = {','};
+            var stream = await file.OpenStreamForReadAsync();
             switch (file.FileType)
             {
                 case ".csv":
-                    
-                    var csvStream = await file.OpenStreamForReadAsync();
                     try
                     {
-                        using (var reader = new StreamReader(csvStream))
+                        using (var reader = new StreamReader(stream))
                         {
                             while (!reader.EndOfStream)
                             {
@@ -211,10 +210,9 @@ namespace FitbitAnalysis_Phillip_Morris.View
                     }
                     break;
                 case ".txt":
-                    var txtStream = await file.OpenStreamForReadAsync();
                     try
                     {
-                        using (var reader = new StreamReader(txtStream))
+                        using (var reader = new StreamReader(stream))
                         {
                             while (!reader.EndOfStream)
                             {
@@ -240,17 +238,17 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 case ".xml":
                     try
                     {
+                        
                         XmlSerializer serializer = new XmlSerializer(typeof(FitbitJournal));
-                        var xmlStream = await file.OpenStreamForReadAsync();
-
-                        using (XmlReader x = XmlReader.Create(xmlStream))
+                                                
+                        using (StreamReader xmlStream = new StreamReader(stream))
                         {
                             
-                            var journal = serializer.Deserialize(x);
+                            var journal = serializer.Deserialize(xmlStream);
                             
                             this.fitbitJournal = journal as FitbitJournal;
                         }
-                    } catch (Exception)
+                    } catch (ArgumentException)
                     {
                     }
                     break;
@@ -400,8 +398,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             {
                 serializer.Serialize(stream, this.fitbitJournal);
                 stream.Position = 0;
-                doc.Load(stream);
-                doc.Save(stream);
             }
         }
 
