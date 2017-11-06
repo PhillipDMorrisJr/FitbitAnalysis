@@ -7,7 +7,7 @@ using FitbitAnalysis_Phillip_Morris.Model;
 namespace FitbitAnalysis_Phillip_Morris.View.ContentDialogs
 {
     /// <summary>
-    /// Creates entry when correct formatted values are passed in
+    ///     Creates entry when correct formatted values are passed in
     /// </summary>
     /// <seealso cref="Windows.UI.Xaml.Controls.ContentDialog" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
@@ -17,7 +17,7 @@ namespace FitbitAnalysis_Phillip_Morris.View.ContentDialogs
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AddEntryDialog"/> class.
+        ///     Initializes a new instance of the <see cref="AddEntryDialog" /> class.
         /// </summary>
         public AddEntryDialog()
         {
@@ -73,17 +73,18 @@ namespace FitbitAnalysis_Phillip_Morris.View.ContentDialogs
         #region Property
 
         /// <summary>
-        /// Gets the fitbit entry.
+        ///     Gets the fitbit entry.
         /// </summary>
         /// <value>
-        /// The fitbit entry.
+        ///     The fitbit entry.
         /// </value>
         public FitbitEntry FitbitEntry { get; private set; }
+
         /// <summary>
-        /// Gets a value indicating whether this instance is good format.
+        ///     Gets a value indicating whether this instance is good format.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance is good format; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is good format; otherwise, <c>false</c>.
         /// </value>
         public bool IsGoodFormat { get; private set; }
 

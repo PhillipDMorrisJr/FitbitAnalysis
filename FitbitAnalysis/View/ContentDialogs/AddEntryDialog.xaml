@@ -25,6 +25,6 @@
                 RenderTransformOrigin="0.219,0.625" Click="addEntry_OnClick" />
         <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="11,51,0,0" VerticalAlignment="Top" Width="278" />
         <Button Content="Done" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,319,0,0"
-            RenderTransformOrigin="0.219,0.625" Click="doneAddingEntry_OnClick" />
+                RenderTransformOrigin="0.219,0.625" Click="doneAddingEntry_OnClick" />
     </Grid>
 </ContentDialog>

@@ -9,8 +9,9 @@
     Title="Attention" Height="289.667" Width="352.667">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="300">
-        <TextBlock  x:Name="prompt" Text="Prompt not set" Margin="0,10,0,5" HorizontalAlignment="Right" Width="289" />
-        <Button  Content="Yes" x:Name="yesButton" Click="yesButton_Click" Margin="10,158,0,10" Width="104" RenderTransformOrigin="0.763,1.198" />
-        <Button   Content="No" x:Name="noButton" Click="noButton_Click" Margin="199,158,0,10" Width="100" />
+        <TextBlock x:Name="prompt" Text="Prompt not set" Margin="0,10,0,5" HorizontalAlignment="Right" Width="289" />
+        <Button Content="Yes" x:Name="yesButton" Click="yesButton_Click" Margin="10,158,0,10" Width="104"
+                RenderTransformOrigin="0.763,1.198" />
+        <Button Content="No" x:Name="noButton" Click="noButton_Click" Margin="199,158,0,10" Width="100" />
     </Grid>
 </ContentDialog>

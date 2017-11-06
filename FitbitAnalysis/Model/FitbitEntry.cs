@@ -3,6 +3,7 @@
 namespace FitbitAnalysis_Phillip_Morris.Model
 {
     /// <summary>
+    ///     Represents a fitbit entry
     /// </summary>
     public class FitbitEntry
     {
@@ -14,7 +15,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The date.
         /// </value>
-        public DateTime Date { get; }
+        public DateTime Date { get; set; }
 
         /// <summary>
         ///     Gets the steps.
@@ -22,7 +23,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The steps.
         /// </value>
-        public int Steps { get; }
+        public int Steps { get; set; }
 
         /// <summary>
         ///     Gets the distance.
@@ -30,7 +31,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The distance.
         /// </value>
-        public double Distance { get; }
+        public double Distance { get; set; }
 
         /// <summary>
         ///     Gets the calories burned.
@@ -38,7 +39,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The calories burned.
         /// </value>
-        public int CaloriesBurned { get; }
+        public int CaloriesBurned { get; set; }
 
         /// <summary>
         ///     Gets the floors.
@@ -46,7 +47,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The floors.
         /// </value>
-        public int Floors { get; }
+        public int Floors { get; set; }
 
         /// <summary>
         ///     Gets the activity calories.
@@ -54,7 +55,7 @@ namespace FitbitAnalysis_Phillip_Morris.Model
         /// <value>
         ///     The activity calories.
         /// </value>
-        public int ActivityCalories { get; }
+        public int ActivityCalories { get; set; }
 
         public TimeSpan ActiveMinutes { get; }
 
@@ -128,6 +129,13 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.Floors = floors;
             this.ActivityCalories = activityCalories;
             this.ActiveMinutes = minutes;
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="FitbitEntry" /> class.
+        /// </summary>
+        public FitbitEntry() : this(new DateTime(), 0, 0, 0, 0, 0, new TimeSpan())
+        {
         }
 
         #endregion
