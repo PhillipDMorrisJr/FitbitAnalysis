@@ -95,6 +95,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\IO\FileSelector.cs" />
     <Compile Include="Utility\IO\Parser.cs" />
     <Compile Include="Utility\MinuteConverter.cs" />
     <Compile Include="View\ContentDialogs\AddEntryDialog.xaml.cs">

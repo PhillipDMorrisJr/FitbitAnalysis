@@ -12,9 +12,9 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             {
                 throw new ArgumentException("Minutes can not be negative");
             }
-            var hourinMinutes = 60;
-            var minute = minutes % hourinMinutes;
-            var hour = minutes / hourinMinutes;
+            var minutesInHour = 60;
+            var minute = minutes % minutesInHour;
+            var hour = minutes / minutesInHour;
 
             var timeSpan = new TimeSpan(hour, minute, 0);
             return timeSpan;

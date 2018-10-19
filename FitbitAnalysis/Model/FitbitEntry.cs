@@ -131,6 +131,45 @@ namespace FitbitAnalysis_Phillip_Morris.Model
             this.ActiveMinutes = minutes;
         }
 
+        public FitbitEntry(DateTime date, int steps, double distance, int caloriesBurned, int floors,
+            int activityCalories)
+        {
+            if (date == null)
+            {
+                throw new ArgumentException("Date can not be null");
+            }
+            if (date > DateTime.Now)
+            {
+                throw new ArgumentException("Date can not be after today");
+            }
+            if (steps < 0)
+            {
+                throw new ArgumentException("Steps musts be positive");
+            }
+            if (distance < 0)
+            {
+                throw new ArgumentException("Distance musts be positive");
+            }
+            if (caloriesBurned < 0)
+            {
+                throw new ArgumentException("Calories burned musts be positive");
+            }
+            if (floors < 0)
+            {
+                throw new ArgumentException("Floors musts be positive");
+            }
+            if (activityCalories < 0)
+            {
+                throw new ArgumentException("Activity Calories musts be positive");
+            }
+
+            this.Date = date;
+            this.Steps = steps;
+            this.Distance = distance;
+            this.CaloriesBurned = caloriesBurned;
+            this.Floors = floors;
+            this.ActivityCalories = activityCalories;
+        }
         /// <summary>
         ///     Initializes a new instance of the <see cref="FitbitEntry" /> class.
         /// </summary>

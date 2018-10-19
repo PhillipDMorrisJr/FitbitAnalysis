@@ -36,8 +36,17 @@ namespace FitbitAnalysis_Phillip_Morris.Utility.IO
             var distance = double.Parse(input[3]);
             var floors = int.Parse(input[4]);
             var activityCalories = int.Parse(input[5]);
-            var activeMinutes = parseActiveMinutes(input);
-            return new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories, floors, activeMinutes);
+            if (input.Length == 6)
+            {
+                var activeMinutes = parseActiveMinutes(input);
+                return new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories, floors, activeMinutes);
+
+            }
+            else
+            {
+                return new FitbitEntry(date, steps, distance, caloriesBurned, activityCalories, floors);
+            }
+
         }
 
         /// <summary>
@@ -47,11 +56,13 @@ namespace FitbitAnalysis_Phillip_Morris.Utility.IO
         /// <returns></returns>
         private static TimeSpan parseActiveMinutes(string[] input)
         {
-            var timeLine = input[6];
+            int activeMinIndex = 6;
+            var timeLine = input[activeMinIndex];
             var timeInMinutes = int.Parse(timeLine);
-
             var activeMinutes = MinuteConverter.ConvertMinutesToTimeSpan(timeInMinutes);
             return activeMinutes;
+
+
         }
 
         #endregion
