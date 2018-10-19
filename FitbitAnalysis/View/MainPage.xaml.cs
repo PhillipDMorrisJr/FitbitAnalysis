@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
@@ -74,29 +75,36 @@ namespace FitbitAnalysis_Phillip_Morris.View
             this.entriesToReplace = new List<FitbitEntry>();
             this.duplicatedDatesNotToAdd = new List<DateTime>();
 
-            var file = await pickFile();
+            var file = await FileSelector.PickFile();
             if (!this.fitbitJournal.IsEmpty())
             {
-                var loadDialog = new OnLoadDialog();
-                await loadDialog.ShowAsync();
-
-                this.mergeAll = loadDialog.MergeAll;
-                this.replaceAll = loadDialog.Replace;
-                if (loadDialog.Cancel)
-                {
-                    return;
-                }
-                if (this.replaceAll)
-                {
-                    this.clearButton_Click(sender, e);
-                }
-
+                if (await handleEmptyFitbitJournal(sender, e)) return;
             }
             await this.parseFile(file);
 
             this.replaceEntries();
 
             await this.generateHistogram();
+        }
+
+        private async Task<bool> handleEmptyFitbitJournal(object sender, RoutedEventArgs e)
+        {
+            var loadDialog = new OnLoadDialog();
+            await loadDialog.ShowAsync();
+
+            this.mergeAll = loadDialog.MergeAll;
+            this.replaceAll = loadDialog.Replace;
+            if (loadDialog.Cancel)
+            {
+                return true;
+            }
+
+            if (this.replaceAll)
+            {
+                this.clearButton_Click(sender, e);
+            }
+
+            return false;
         }
 
         private static async Task handleWhenEitherInputsAreNotParsed(bool thresholdParsed, bool amountOfCategoryParsed,
@@ -119,28 +127,28 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             else
             {
-                bool thresholdParsed;
-                bool binSizeParsed;
-                bool amountOfCategoriesParsed;
-
-                var thresholdResult = this.parseTextBoxTextToInteger(out thresholdParsed, this.threshold);
-                var amountOfCategoriesResult =
-                    this.parseTextBoxTextToInteger(out amountOfCategoriesParsed, this.amountOfCategories);
-                var binSizeResult = this.parseTextBoxTextToInteger(out binSizeParsed, this.binSize);
-
-                await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed, binSizeParsed);
-                 
-                this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
-                this.outputTextBox.Text =
-                    this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
+                await assignHistogramOutput();
             }
+        }
+
+        private async Task assignHistogramOutput()
+        {
+            var thresholdResult = this.parseTextBoxTextToInteger(out var thresholdParsed, this.threshold);
+            var amountOfCategoriesResult =
+                this.parseTextBoxTextToInteger(out var amountOfCategoriesParsed, this.amountOfCategories);
+            var binSizeResult = this.parseTextBoxTextToInteger(out var binSizeParsed, this.binSize);
+
+            await handleWhenEitherInputsAreNotParsed(thresholdParsed, amountOfCategoriesParsed, binSizeParsed);
+
+            this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
+            this.outputTextBox.Text =
+                this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
         }
 
         private int parseTextBoxTextToInteger(out bool isParsed, TextBox textBox)
         {
             var text = textBox.Text;
-            int result;
-            isParsed = int.TryParse(text, out result);
+            isParsed = int.TryParse(text, out var result);
             if (isParsed)
             {
                 textBox.Text = Convert.ToString(result);
@@ -156,20 +164,6 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
         }
 
-        private static async Task<StorageFile> pickFile()
-        {
-            var fileChooser = new FileOpenPicker {
-                ViewMode = PickerViewMode.Thumbnail,
-                SuggestedStartLocation = PickerLocationId.DocumentsLibrary
-            };
-            fileChooser.FileTypeFilter.Add(".csv");
-            fileChooser.FileTypeFilter.Add(".txt");
-            fileChooser.FileTypeFilter.Add(".xml");
-
-            var file = await fileChooser.PickSingleFileAsync();
-            return file;
-        }
-
         /// <summary>
         ///     Parses the file.
         /// </summary>
@@ -177,71 +171,85 @@ namespace FitbitAnalysis_Phillip_Morris.View
         /// <returns></returns>
         private async Task parseFile(StorageFile file)
         {
-            if (file == null)
+            if (file != null)
             {
-                return;
+                char[] seperator = {','};
+                var stream = await file.OpenStreamForReadAsync();
+                switch (file.FileType)
+                {
+                    case ".csv":
+                        await handleCSVFile(stream, seperator);
+                        break;
+                    case ".txt":
+                        await handleTXTFile(stream, seperator);
+                        break;
+                    case ".xml":
+                        await handleXMLFile(stream);
+                        break;
+                }
             }
-            char[] seperator = {','};
-            var stream = await file.OpenStreamForReadAsync();
-            switch (file.FileType)
+        }
+
+        private async Task handleXMLFile(Stream stream)
+        {
+            try
             {
-                case ".csv":
-                    try
-                    {
-                        using (var reader = new StreamReader(stream))
-                        {
-                            while (!reader.EndOfStream)
-                            {
-                                var line = reader.ReadLine();
-                                var input = line.Split(seperator);
-                                var fitbitEntry = Parser.ParseCsv(input);
+                var serializer = new XmlSerializer(typeof(FitbitJournal));
 
-                                await this.manageAndAddFitbitEntry(fitbitEntry, fitbitEntry.Date);
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        await informTheUserOfIssue();
-                    }
-                    break;
-                case ".txt":
-                    try
-                    {
-                        using (var reader = new StreamReader(stream))
-                        {
-                            while (!reader.EndOfStream)
-                            {
-                                var line = reader.ReadLine();
-                                var input = line.Split(seperator);
-                                var fitbitEntry = Parser.ParseCsv(input);
+                using (var xmlStream = new StreamReader(stream))
+                {
+                    var journal = serializer.Deserialize(xmlStream);
 
-                                await this.manageAndAddFitbitEntry(fitbitEntry, fitbitEntry.Date);
-                            }
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        await informTheUserOfIssue();
-                    }
-                    break;
-                case ".xml":
-                    try
-                    {
-                        var serializer = new XmlSerializer(typeof(FitbitJournal));
+                    this.fitbitJournal = journal as FitbitJournal;
+                }
+            }
+            catch (Exception)
+            {
+                await informTheUserOfIssue();
+            }
+        }
 
-                        using (var xmlStream = new StreamReader(stream))
-                        {
-                            var journal = serializer.Deserialize(xmlStream);
-
-                            this.fitbitJournal = journal as FitbitJournal;
-                        }
-                    }
-                    catch (Exception)
+        private async Task handleTXTFile(Stream stream, char[] seperator)
+        {
+            try
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
                     {
-                        await informTheUserOfIssue();
+                        var line = reader.ReadLine();
+                        var input = line.Split(seperator);
+                        var fitbitEntry = Parser.ParseCsv(input);
+
+                        await this.manageFitbitEntry(fitbitEntry);
                     }
-                    break;
+                }
+            }
+            catch (Exception)
+            {
+                await informTheUserOfIssue();
+            }
+        }
+
+        private async Task handleCSVFile(Stream stream, char[] seperator)
+        {
+            try
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var input = line.Split(seperator);
+                        var fitbitEntry = Parser.ParseCsv(input);
+
+                        await this.manageFitbitEntry(fitbitEntry);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await informTheUserOfIssue();
             }
         }
 
@@ -254,7 +262,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
             await tellAboutTroubles.ShowAsync();
         }
 
-        private async Task manageAndAddFitbitEntry(FitbitEntry fitbitEntry, DateTime date)
+        private async Task manageFitbitEntry(FitbitEntry fitbitEntry)
         {
             if (this.mergeAll)
             {
@@ -262,13 +270,13 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             else if (!this.skipAll)
             {
-                await this.handleWhenFitbitContainsDate(date, fitbitEntry);
+                await this.handleWhenFitbitContainsDate(fitbitEntry);
             }
         }
 
-        private async Task handleWhenFitbitContainsDate(DateTime date, FitbitEntry fitbitEntry)
+        private async Task handleWhenFitbitContainsDate(FitbitEntry fitbitEntry)
         {
-            if (this.fitbitJournal.ContainsDate(date))
+            if (this.fitbitJournal.ContainsDate(fitbitEntry.Date))
             {
                 await this.handleWhenThereAreDuplicateDates(fitbitEntry);
                 this.handleWhenReplacing(fitbitEntry);
@@ -401,22 +409,30 @@ namespace FitbitAnalysis_Phillip_Morris.View
                 var entry = entryDialog.FitbitEntry;
                 if (entry == null)
                 {
-                    if (!entryDialog.IsGoodFormat)
-                    {
-                        await informEntryIsBadFormat();
-                    }
-                    else
-                    {
-                        await informEntryNotAdded();
-                    }
+                    await handleEntryDialog(entryDialog);
                     return;
                 }
-                await this.manageAndAddFitbitEntry(entry, entry.Date);
+                await this.manageFitbitEntry(entry);
                 this.updateButton_OnClickButton_Click(sender, e);
             }
-            catch (FormatException)
+            catch (FormatException exc)
             {
+                Debug.WriteLine("FormatException source: {0}", exc.Source);  
             }
+        }
+
+        private static async Task handleEntryDialog(AddEntryDialog entryDialog)
+        {
+            if (!entryDialog.IsGoodFormat)
+            {
+                await informEntryIsBadFormat();
+            }
+            else
+            {
+                await informEntryNotAdded();
+            }
+
+            return;
         }
 
         private static async Task informEntryNotAdded()
