@@ -5,26 +5,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    x:Name="entryDialog"
-    d:DesignHeight="400"
-    d:DesignWidth="400">
+    x:Name="entryDialog" Height="650.741" Width="602.211">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="312" Height="400">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="312" Height="500">
         <TextBox x:Name="caloriesBurned" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Calories Burned"
-                 VerticalAlignment="Top" Margin="10,162,0,0" Width="297" />
+                 VerticalAlignment="Top" Margin="11,202,0,0" Width="297" />
         <TextBox x:Name="steps" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Steps" VerticalAlignment="Top"
                  Margin="10,88,0,0" Width="297" />
         <TextBox x:Name="distance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Distance"
-                 VerticalAlignment="Top" Margin="10,125,0,0" Width="297" />
-        <TextBox x:Name="floors" Margin="10,199,5,0" TextWrapping="Wrap" Text="Floors" VerticalAlignment="Top" />
-        <TextBox x:Name="activityCalories" Margin="10,236,5,0" TextWrapping="Wrap" Text="Activity Calories"
+                 VerticalAlignment="Top" Margin="10,145,0,0" Width="297" />
+        <TextBox x:Name="floors" Margin="10,259,5,0" TextWrapping="Wrap" Text="Floors" VerticalAlignment="Top" />
+        <TextBox x:Name="activityCalories" Margin="10,316,5,0" TextWrapping="Wrap" Text="Activity Calories"
                  VerticalAlignment="Top" />
-        <TextBox x:Name="activeMinutes" Margin="10,273,5,0" TextWrapping="Wrap" Text="Activite Minutes"
+        <TextBox x:Name="activeMinutes" Margin="11,373,4,0" TextWrapping="Wrap" Text="Activite Minutes"
                  VerticalAlignment="Top" />
-        <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,319,0,0"
+        <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,436,0,0"
                 RenderTransformOrigin="0.219,0.625" Click="addEntry_OnClick" />
-        <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="11,51,0,0" VerticalAlignment="Top" Width="278" />
-        <Button Content="Done" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="250,319,0,0"
+        <DatePicker x:Name="date" HorizontalAlignment="Left" Margin="11,32,0,0" VerticalAlignment="Top" Width="278" />
+        <Button Content="Done" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="246,436,0,0"
                 RenderTransformOrigin="0.219,0.625" Click="doneAddingEntry_OnClick" />
+        <TextBlock HorizontalAlignment="Left" Margin="11,7,0,0" TextWrapping="Wrap" Text="Date:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,63,0,0" TextWrapping="Wrap" Text="Steps:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,120,0,0" TextWrapping="Wrap" Text="Distance:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,177,0,0" TextWrapping="Wrap" Text="Calories Burned:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,234,0,0" TextWrapping="Wrap" Text="Floors:" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,291,0,0" TextWrapping="Wrap" Text="Activity Calories" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="11,348,0,0" TextWrapping="Wrap" Text="Active Minutes" VerticalAlignment="Top"/>
     </Grid>
 </ContentDialog>

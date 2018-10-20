@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 using FitbitAnalysis_Phillip_Morris.Model;
 
 namespace FitbitAnalysis_Phillip_Morris.Report
@@ -39,17 +41,24 @@ namespace FitbitAnalysis_Phillip_Morris.Report
         ///     Gets the output.
         /// </summary>
         /// <returns>The output</returns>
-        public string GetOutput(int threshold, int amountOfCategories, int binSize)
+        public async Task<string> GetOutput(int threshold, int amountOfCategories, int binSize)
         {
             if (amountOfCategories > threshold)
             {
-                //TODO: Add Popup
-                throw new ArgumentException("Threshold must be greater than the amount of categories!");
+                var informAboutThreshold = new ContentDialog {
+                    Content = "Threshold must be greater than the amount of categories!",
+                    CloseButtonText = "Okay"
+                };
+                await informAboutThreshold.ShowAsync();
+                
             }
             if (threshold < 0 || amountOfCategories < 0 || binSize < 0)
             {
-                //TODO: Popup
-                throw new ArgumentException("Threshold must be positive!");
+                var informAboutThreshold = new ContentDialog {
+                    Content = "Threshold must be positive!",
+                    CloseButtonText = "Okay"
+                };
+                await informAboutThreshold.ShowAsync();
             }
             this.currentBinSize = binSize;
             this.currentThreshold = threshold;

@@ -142,7 +142,7 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
             this.fitbitFitbitJournalOutput = new FitbitJournalOutput(this.fitbitJournal);
             this.outputTextBox.Text =
-                this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult);
+                this.fitbitFitbitJournalOutput.GetOutput(thresholdResult, amountOfCategoriesResult, binSizeResult).Result;
         }
 
         private int parseTextBoxTextToInteger(out bool isParsed, TextBox textBox)
@@ -205,17 +205,22 @@ namespace FitbitAnalysis_Phillip_Morris.View
             }
             catch (Exception)
             {
-                await informTheUserOfIssue();
+                var result = await isUserContinuing();
+                if (!result)
+                {
+                    return;
+                }
             }
         }
 
         private async Task handleTXTFile(Stream stream, char[] seperator)
         {
-            try
+
+            using (var reader = new StreamReader(stream))
             {
-                using (var reader = new StreamReader(stream))
+                while (!reader.EndOfStream)
                 {
-                    while (!reader.EndOfStream)
+                    try
                     {
                         var line = reader.ReadLine();
                         var input = line.Split(seperator);
@@ -223,43 +228,59 @@ namespace FitbitAnalysis_Phillip_Morris.View
 
                         await this.manageFitbitEntry(fitbitEntry);
                     }
+                    catch (Exception)
+                    {
+                        var result = await isUserContinuing();
+                        if (!result)
+                        {
+                            return;
+                        }
+                    }
                 }
             }
-            catch (Exception)
-            {
-                await informTheUserOfIssue();
-            }
+            
+
         }
 
         private async Task handleCSVFile(Stream stream, char[] seperator)
         {
-            try
-            {
+
                 using (var reader = new StreamReader(stream))
                 {
                     while (!reader.EndOfStream)
                     {
-                        var line = reader.ReadLine();
-                        var input = line.Split(seperator);
-                        var fitbitEntry = Parser.ParseCsv(input);
+                        try
+                        {
+                            var line = reader.ReadLine();
+                            var input = line.Split(seperator);
+                            var fitbitEntry = Parser.ParseCsv(input);
 
-                        await this.manageFitbitEntry(fitbitEntry);
+                            await this.manageFitbitEntry(fitbitEntry);
+                        }
+                        catch (Exception)
+                        {
+                            var result = await isUserContinuing();
+                            if (!result)
+                            {
+                                return;
+                            }
+                        }
+
                     }
                 }
-            }
-            catch (Exception)
-            {
-                await informTheUserOfIssue();
-            }
+            
         }
 
-        private static async Task informTheUserOfIssue()
+        /// <summary>
+        /// Informs the user of issue.
+        /// </summary>
+        /// <returns>true if user wishes to continue </returns>
+        private static async Task<bool> isUserContinuing()
         {
-            var tellAboutTroubles = new ContentDialog {
-                Content = "Stumbled a bit while reading the file, but we're going to keep trying!",
-                CloseButtonText = "Great"
-            };
+            var tellAboutTroubles = new CustomContentDialog("Stumbled a bit while reading the file."+Environment.NewLine+"Would you like to keep going?");
+            
             await tellAboutTroubles.ShowAsync();
+            return tellAboutTroubles.Result == CustomContentDialog.MyResult.Yes;
         }
 
         private async Task manageFitbitEntry(FitbitEntry fitbitEntry)
@@ -395,8 +416,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
             fitbitFileOutput += entry.Steps + ",";
             fitbitFileOutput += entry.Distance + ",";
             fitbitFileOutput += entry.Floors + ",";
-            fitbitFileOutput += entry.ActiveMinutes + ",";
-            fitbitFileOutput += entry.ActivityCalories + Environment.NewLine;
+            fitbitFileOutput += entry.ActivityCalories + ",";
+            fitbitFileOutput += entry.ActiveMinutes + Environment.NewLine;
             return fitbitFileOutput;
         }
 
@@ -449,7 +470,8 @@ namespace FitbitAnalysis_Phillip_Morris.View
             var formatDialog = new ContentDialog {
                 Content =
                     "The distance must be positive and the steps, calories, active minutes and floors must be positive integers. The entry's date can not come before the current date.",
-                CloseButtonText = "Okay"
+                CloseButtonText = "Okay",
+                
             };
             await formatDialog.ShowAsync();
         }
