@@ -8,16 +8,16 @@
     x:Name="entryDialog" Height="650.741" Width="602.211">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Width="312" Height="500">
-        <TextBox x:Name="caloriesBurned" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Calories Burned"
+        <TextBox x:Name="caloriesBurned" HorizontalAlignment="Left" TextWrapping="Wrap" 
                  VerticalAlignment="Top" Margin="11,202,0,0" Width="297" />
-        <TextBox x:Name="steps" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Steps" VerticalAlignment="Top"
+        <TextBox x:Name="steps" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top"
                  Margin="10,88,0,0" Width="297" />
-        <TextBox x:Name="distance" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Distance"
+        <TextBox x:Name="distance" HorizontalAlignment="Left" TextWrapping="Wrap" 
                  VerticalAlignment="Top" Margin="10,145,0,0" Width="297" />
         <TextBox x:Name="floors" Margin="10,259,5,0" TextWrapping="Wrap" Text="Floors" VerticalAlignment="Top" />
-        <TextBox x:Name="activityCalories" Margin="10,316,5,0" TextWrapping="Wrap" Text="Activity Calories"
+        <TextBox x:Name="activityCalories" Margin="10,316,5,0" TextWrapping="Wrap" 
                  VerticalAlignment="Top" />
-        <TextBox x:Name="activeMinutes" Margin="11,373,4,0" TextWrapping="Wrap" Text="Activite Minutes"
+        <TextBox x:Name="activeMinutes" Margin="11,373,4,0" TextWrapping="Wrap" 
                  VerticalAlignment="Top" />
         <Button Content="Add Entry" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="11,436,0,0"
                 RenderTransformOrigin="0.219,0.625" Click="addEntry_OnClick" />
